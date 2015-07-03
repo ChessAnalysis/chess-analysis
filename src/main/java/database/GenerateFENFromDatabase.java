@@ -4,7 +4,6 @@ import ictk.boardgame.IllegalMoveException;
 import ictk.boardgame.Move;
 import ictk.boardgame.chess.AmbiguousChessMoveException;
 import ictk.boardgame.chess.ChessBoard;
-import ictk.boardgame.chess.ChessMove;
 import ictk.boardgame.chess.io.FEN;
 import ictk.boardgame.chess.io.SAN;
 
@@ -21,12 +20,26 @@ import java.util.StringTokenizer;
 import config.ConfigSQL;
 
 
+/**
+ */
 public class GenerateFENFromDatabase {
 	
 	private Map<String, Integer> fenMap;
 	private Connection connexion;
 	private static int count = 0;
 
+	/**
+	 * Constructor for GenerateFENFromDatabase.
+	 * @param config ConfigSQL
+	 * @param i int
+	 * @param fenMap Map<String,Integer>
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws AmbiguousChessMoveException
+	 * @throws IllegalMoveException
+	 */
 	public GenerateFENFromDatabase(ConfigSQL config, int i, Map<String, Integer> fenMap) throws IOException, InterruptedException, ClassNotFoundException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
 		Class.forName(config.getDriver());
 		this.connexion = DriverManager.getConnection(config.getUrl() + config.getDb() + "?user=" + config.getUser() + "&password=" + config.getPass() + "&rewriteBatchedStatements=true");
@@ -35,6 +48,15 @@ public class GenerateFENFromDatabase {
 		init(i);
 	}
 
+	/**
+	 * Method init.
+	 * @param i int
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws SQLException
+	 * @throws AmbiguousChessMoveException
+	 * @throws IllegalMoveException
+	 */
 	public void init(int i) throws IOException, InterruptedException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
 
 		
@@ -81,7 +103,7 @@ public class GenerateFENFromDatabase {
 				insertMove.setInt(1, rs.getInt(1));
 				token = stoken.nextToken();
 				if(!token.contains(".")) {
-					move = (ChessMove) san.stringToMove(board, token);
+					move = san.stringToMove(board, token);
 					board.playMove(move);
 					insertMove.setInt(2, halfMove++);
 					insertMove.setString(3, token);

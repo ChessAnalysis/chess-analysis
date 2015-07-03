@@ -17,6 +17,8 @@ import engine.Engine;
 import engine.EngineFactory;
 import engine.EnginePreferences;
 
+/**
+ */
 public class StockfishAnalyze {
 
 	private static final String STOCKFISH_IGRIDA = "/uci-engine/stockfish-6-igrida/src/stockfish";
@@ -25,6 +27,12 @@ public class StockfishAnalyze {
 	private static int count;
 	private static Engine engine;
 
+	/**
+	 * Constructor for StockfishAnalyze.
+	 * @param file Integer
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public StockfishAnalyze(Integer file) throws SQLException, IOException {
 		prefs.setOption("multipv", "1");
 		prefs.setOption("Threads", "5");
@@ -39,6 +47,12 @@ public class StockfishAnalyze {
 		
 	}
 
+	/**
+	 * Method initFile.
+	 * @param i Integer
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	private void initFile(Integer i) throws SQLException, IOException {
 		
 		URL url = getClass().getResource("/"+i); 

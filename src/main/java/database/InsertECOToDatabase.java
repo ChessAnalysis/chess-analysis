@@ -13,12 +13,21 @@ import java.sql.Statement;
 import jline.internal.Log;
 import config.ConfigSQL;
 
+/**
+ */
 public class InsertECOToDatabase {
 
 	private Connection connexion;
 	private int row = 0;
 	private static PreparedStatement insertOpening = null;
 
+	/**
+	 * Constructor for InsertECOToDatabase.
+	 * @param connexion ConfigSQL
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public InsertECOToDatabase(ConfigSQL connexion) throws ClassNotFoundException, SQLException, IOException {
 		Class.forName(connexion.getDriver());
 		this.connexion = DriverManager.getConnection(connexion.getUrl() + connexion.getDb() + "?user=" + connexion.getUser() + "&password=" + connexion.getPass() + "&rewriteBatchedStatements=true");
@@ -26,6 +35,11 @@ public class InsertECOToDatabase {
 		init();
 	}
 
+	/**
+	 * Method init.
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public void init() throws SQLException, IOException {
 
 		insertOpening = connexion.prepareStatement("INSERT INTO Opening (eco, opening, variation, moves, nbMoves) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -67,7 +81,7 @@ public class InsertECOToDatabase {
 						//System.out.println(line2);
 						line2 = line2.trim();
 
-						if (line2.startsWith("[")) {
+						if (line2.charAt(0) == '[') {
 							String tagName = line2.substring(1, line2.indexOf(" "));
 							String tagValue = line2.substring(line2.indexOf("\"") + 1,
 									line2.lastIndexOf("\""));
@@ -107,6 +121,11 @@ public class InsertECOToDatabase {
 		Log.info(row + " openings insérés dans la base de données.");
 	}
 
+	/**
+	 * Method wordcount.
+	 * @param s String
+	 * @return int
+	 */
 	static int wordcount(String s)
 	{
 		int c = 0;

@@ -24,6 +24,8 @@ import jline.internal.Log;
 import config.ConfigSQL;
 
 
+/**
+ */
 public class InsertPGNToDatabase {
 
 	private static final String PATH = "";
@@ -49,6 +51,13 @@ public class InsertPGNToDatabase {
 	private static HashMap<String, Integer> events = new HashMap<String, Integer>();
 	private static HashMap<String, Integer> openings = new HashMap<String, Integer>();
 
+	/**
+	 * Constructor for InsertPGNToDatabase.
+	 * @param filename String
+	 * @param connexion ConfigSQL
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public InsertPGNToDatabase(String filename, ConfigSQL connexion) throws ClassNotFoundException, SQLException {
 		this.filename = filename;
 		Class.forName(connexion.getDriver());
@@ -72,6 +81,14 @@ public class InsertPGNToDatabase {
 		}
 	}
 
+	/**
+	 * Method init.
+	 * @param pgn BufferedReader
+	 * @throws IOException
+	 * @throws NullPointerException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public void init(BufferedReader pgn) throws IOException, NullPointerException, ClassNotFoundException, SQLException {
 		List<String> pgnSources = splitPGN(pgn);
 
@@ -125,6 +142,13 @@ public class InsertPGNToDatabase {
 		Log.info(count + " inserted games");
 	}
 
+	/**
+	 * Method parseGame.
+	 * @param pgn String
+	 * @param players HashMap<String,Integer>
+	 * @param events HashMap<String,Integer>
+	 * @throws IOException
+	 */
 	private void parseGame(String pgn, HashMap<String, Integer> players, HashMap<String, Integer> events) throws IOException {
 		BufferedReader br = new BufferedReader(new StringReader(pgn));
 		String line;
@@ -155,7 +179,7 @@ public class InsertPGNToDatabase {
 			while ((line = br.readLine()) != null) {
 				line = line.trim();
 
-				if (line.startsWith("[")) {
+				if (line.charAt(0) == '[') {
 					try {
 						String tagName = line.substring(1, line.indexOf(" "));
 						String tagValue = line.substring(line.indexOf("\"") + 1,
@@ -168,7 +192,7 @@ public class InsertPGNToDatabase {
 							case "Round":	round = tagValue; break;
 							case "White":	whiteId = getPlayer(tagValue, players); break;
 							case "Black":  	blackId = getPlayer(tagValue, players); break;
-							case "TotalPlyCount": try { totalPlyCount = Integer.parseInt(tagValue); break; } catch (Exception e) { totalPlyCount = -1; continue; }
+							case "TotalPlyCount": try { totalPlyCount = Integer.parseInt(tagValue); break; } catch (Exception e) { Log.error("TotalplyCount " + tagValue + " " + e); totalPlyCount = -1; continue; }
 							case "Result":
 								switch (tagValue) {
 								case "1-0": result = 0; break;
@@ -176,8 +200,8 @@ public class InsertPGNToDatabase {
 								case "1/2-1/2": result = 2; break;
 								case "*": result = 3; break;
 								} break;
-							case "WhiteElo": try { whiteElo = Integer.parseInt(tagValue); break; } catch (Exception e) { whiteElo = -1; continue; }
-							case "BlackElo": try { blackElo = Integer.parseInt(tagValue); break; } catch (Exception e) { whiteElo = -1; continue; }
+							case "WhiteElo": try { whiteElo = Integer.parseInt(tagValue); break; } catch (Exception e) { Log.error("WhiteElo " + tagValue + " " + e); whiteElo = -1; continue; }
+							case "BlackElo": try { blackElo = Integer.parseInt(tagValue); break; } catch (Exception e) { Log.error("BlackElo " + tagValue + " " + e); whiteElo = -1; continue; }
 							case "ECO": openingEco = tagValue; break;
 							case "Opening": openingName = tagValue; break;
 							case "Variation": openingVariation = tagValue; break;
@@ -189,9 +213,9 @@ public class InsertPGNToDatabase {
 					}
 				} else {
 					if (!line.isEmpty()) {
-						if(line.startsWith("-")) {
+						if(line.charAt(0) == '-') {
 							movesSAN.append(line.substring(1) + " ");
-						} else if (line.startsWith("+")) {
+						} else if (line.charAt(0) == '+') {
 							movesUCI.append(line.substring(1) + " ");
 						}
 					}
@@ -206,6 +230,7 @@ public class InsertPGNToDatabase {
 			ecoId = getOpening(openingEco, openingName, openingVariation);
 			dateSql = new java.sql.Date(date.getTime());
 		} catch (Exception e) {
+			Log.error("Date parse " + date + " " + e); 
 			dateSql = null;
 		}
 
@@ -233,6 +258,13 @@ public class InsertPGNToDatabase {
 
 	}
 
+	/**
+	 * Method getOpening.
+	 * @param openingEco String
+	 * @param openingName String
+	 * @param openingVariation String
+	 * @return int
+	 */
 	private int getOpening(String openingEco, String openingName,
 			String openingVariation) {
 		if(openings.containsKey(openingEco+"/"+openingName+"/"+openingVariation))
@@ -242,6 +274,12 @@ public class InsertPGNToDatabase {
 
 
 
+	/**
+	 * Method getDate.
+	 * @param tagValue String
+	 * @return Date
+	 * @throws ParseException
+	 */
 	private Date getDate(String tagValue) throws ParseException {
 		if(tagValue.contains("?")) {
 			tagValue = tagValue.substring(0, 7);
@@ -259,6 +297,7 @@ public class InsertPGNToDatabase {
 			try {
 				return formatterDay.parse(tagValue);
 			} catch (ParseException e) {
+				Log.error("Date parse " + tagValue + " " + e); 
 				return null;
 			}
 		}
@@ -266,6 +305,14 @@ public class InsertPGNToDatabase {
 
 
 
+	/**
+	 * Method getEvent.
+	 * @param eventName String
+	 * @param eventCity String
+	 * @param events HashMap<String,Integer>
+	 * @return int
+	 * @throws SQLException
+	 */
 	private int getEvent(String eventName, String eventCity, HashMap<String, Integer> events) throws SQLException {
 
 		if(events.containsKey(eventName+"/"+eventCity))
@@ -280,6 +327,13 @@ public class InsertPGNToDatabase {
 		}
 	}
 
+	/**
+	 * Method getPlayer.
+	 * @param name String
+	 * @param players HashMap<String,Integer>
+	 * @return int
+	 * @throws SQLException
+	 */
 	private int getPlayer(String name, HashMap<String, Integer> players) throws SQLException {
 		if(players.containsKey(name)) {
 			return players.get(name);
@@ -295,10 +349,12 @@ public class InsertPGNToDatabase {
 
 	/**
 	 * 
-	 * @param pgn
-	 * @return
-	 * @throws IOException
-	 */
+	
+	
+	
+	 * @param br BufferedReader
+	 * @return List<String>
+	 * @throws IOException */
 	private static List<String> splitPGN(BufferedReader br) throws IOException {
 		List<String> pgnGames = new LinkedList<String>();
 
@@ -315,7 +371,7 @@ public class InsertPGNToDatabase {
 				if (!line.isEmpty()) {
 					buffer.append(line + "\r\n");
 
-					if (line.startsWith("+")) {
+					if (line.charAt(0) == '+') {
 						pgnGames.add(buffer.toString());
 						buffer.delete(0, buffer.length());
 					}

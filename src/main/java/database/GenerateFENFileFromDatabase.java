@@ -13,15 +13,31 @@ import com.google.common.io.Files;
 
 import config.ConfigSQL;
 
+/**
+ */
 public class GenerateFENFileFromDatabase {
 	
 	private Connection connexion;
 	private static int count = 0;
 
+	/**
+	 * Method main.
+	 * @param args String[]
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException {
 		new GenerateFENFileFromDatabase(new ConfigSQL("diverse"));
 	}
 	
+	/**
+	 * Constructor for GenerateFENFileFromDatabase.
+	 * @param config ConfigSQL
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	public GenerateFENFileFromDatabase(ConfigSQL config) throws ClassNotFoundException, SQLException, IOException {
 		Class.forName(config.getDriver());
 		this.connexion = DriverManager.getConnection(config.getUrl() + config.getDb() + "?user=" + config.getUser() + "&password=" + config.getPass() + "&rewriteBatchedStatements=true");

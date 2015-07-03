@@ -4,7 +4,6 @@ import ictk.boardgame.IllegalMoveException;
 import ictk.boardgame.Move;
 import ictk.boardgame.chess.AmbiguousChessMoveException;
 import ictk.boardgame.chess.ChessBoard;
-import ictk.boardgame.chess.ChessMove;
 import ictk.boardgame.chess.io.FEN;
 import ictk.boardgame.chess.io.SAN;
 
@@ -15,17 +14,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import config.ConfigSQL;
 
 
+/**
+ */
 public class GenerateECOFromDatabase {
 	
 	private Connection connexion;
 	private int count = 0;
 
+	/**
+	 * Constructor for GenerateECOFromDatabase.
+	 * @param config ConfigSQL
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws AmbiguousChessMoveException
+	 * @throws IllegalMoveException
+	 */
 	public GenerateECOFromDatabase(ConfigSQL config) throws IOException, InterruptedException, ClassNotFoundException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
 		Class.forName(config.getDriver());
 		this.connexion = DriverManager.getConnection(config.getUrl() + config.getDb() + "?user=" + config.getUser() + "&password=" + config.getPass() + "&rewriteBatchedStatements=true");
@@ -33,6 +43,14 @@ public class GenerateECOFromDatabase {
 		init();
 	}
 
+	/**
+	 * Method init.
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws SQLException
+	 * @throws AmbiguousChessMoveException
+	 * @throws IllegalMoveException
+	 */
 	public void init() throws IOException, InterruptedException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
 
 		
@@ -71,7 +89,7 @@ public class GenerateECOFromDatabase {
 				
 				token = stoken.nextToken();
 				if(!token.contains(".")) {
-					move = (ChessMove) san.stringToMove(board, token);
+					move = san.stringToMove(board, token);
 					board.playMove(move);
 					insertMove.setInt(2, halfMove++);
 					insertMove.setString(3, token);

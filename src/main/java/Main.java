@@ -12,8 +12,20 @@ import config.ConfigSQL;
 import database.InsertECOToDatabase;
 import database.InsertPGNToDatabase;
 
+/**
+ */
 public class Main {
 
+	/**
+	 * Method main.
+	 * @param args String[]
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws AmbiguousChessMoveException
+	 * @throws IllegalMoveException
+	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
 
 		ConfigSQL connexion= new ConfigSQL("diverse");
