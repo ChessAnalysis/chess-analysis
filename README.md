@@ -1,8 +1,8 @@
 Chess Analyzing
 ===================
 
-This repository contains a Java project created as part of research stage on chess analyzing.
-You can find different resources to analyse chess games.
+This repository contains a Java project created as part of research internship at INRIA laboratory on chess analyzing.
+You can find different resources to analyse chess games with Stockfish UCI Engine.
 
 #### Statically analyse
 
@@ -11,7 +11,7 @@ You can find different resources to analyse chess games.
 
 #### Dynamically analyse
 
- - Use Stockfish to evaluate games retrieved by Spark SQL
+ - Use Stockfish to evaluate games
 
 ----------
 
@@ -43,8 +43,7 @@ As you have noticed, each PGN file is separated in 2 parts: (1) headers (2) move
 
 The statically analyze consists to parse each file and inspects each interesting headers information like *White Elo Rating*, *Result* or *Date*. We can also get an iterator on moves to get information about *Pieces Captured Count* or *Pieces Moves Count*...
 
-We use Spark SQL to collect data from our database. Then, we parse each game with a [Java parser](http://sourceforge.net/projects/pgnparse/) in order to analyze moves (promotions, king castling, captured pieces...). This file also generated a CSV file usable by R.
-
+We parse all games with a [Java parser](http://sourceforge.net/projects/pgnparse/) in order to analyze different moves (promotions, king castling, captured pieces...) and generate FEN.
 
 
 ----------
@@ -52,4 +51,21 @@ We use Spark SQL to collect data from our database. Then, we parse each game wit
 Dynamically Analyze
 -------------
 
-As statically analyze, we collect data from our database with the help of Spark SQL. Then, we give a evaluation to each move thankful Stockfish UCI engine.
+We can calculate intrinsic strength of players with recent UCI Engine. Indeed, we calculate a score and evaluation of each move.
+
+| Move                 | Evaluation | Gain  |
+|----------------------|------------|-------|
+| 1 - f3               | 0.12       | -0.01 |
+| 1 - f6               | 0.12       | 0.00  |
+| 2 - e4               | 0.07       | -0.05 |
+
+We will analyse all generated FEN on Igrida Cluster with Stockfish UCI Engine (depth 20 with multi-pv 5). All logs are saved in file.
+
+```
+rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
+info depth 1 seldepth 1 multipv 1 score cp 3 nodes 64 nps 64000 tbhits 0 time 1 pv d7d5
+info depth 1 seldepth 1 multipv 2 score cp -3 nodes 64 nps 64000 tbhits 0 time 1 pv d7d6
+info depth 1 seldepth 1 multipv 3 score cp -6 nodes 64 nps 64000 tbhits 0 time 1 pv g8f6
+info depth 2 seldepth 2 multipv 1 score cp -8 nodes 199 nps 199000 tbhits 0 time 1 pv d7d5 b2b3
+info depth 2 seldepth 2 multipv 2 score cp -64 nodes 199 nps 199000 tbhits 0 time 1 pv d7d6 d2d3
+info depth 2 seldepth 2 multipv 3 score cp -67 nodes 199 nps 199000 tbhits 0 time 1 pv e7e6 d2d3
