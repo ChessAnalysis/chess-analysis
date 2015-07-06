@@ -34,11 +34,11 @@ public class StockfishAnalyze {
 	 * @throws IOException
 	 */
 	public StockfishAnalyze(Integer file) throws SQLException, IOException {
-		prefs.setOption("multipv", "1");
-		prefs.setOption("Threads", "5");
+		prefs.setOption("multipv", "5");
+		prefs.setOption("Threads", "1");
 		prefs.setDepth(20);
 		
-		engine = EngineFactory.getInstance().createEngine(System.getProperty("user.home") + STOCKFISH_IGRIDA, prefs);
+		engine = EngineFactory.getInstance().createEngine("/temp_dd/igrida-fs1/fesnault/SCRATCH" + STOCKFISH_IGRIDA, prefs);
 		
 		Log.info("Début de l'analyse dynamique avec Stockfish");
 		long startTimeParsed = System.nanoTime();
@@ -70,7 +70,7 @@ public class StockfishAnalyze {
 			count++;
 			
 			if((count%5)==0) {
-				Files.append(sb, new File(System.getProperty("user.home") + "/fen/o" + i), Charset.defaultCharset());
+				Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/fen/o" + i), Charset.defaultCharset());
 				sb.setLength(0);
 			}
 		}
