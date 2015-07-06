@@ -1,24 +1,43 @@
-Chess Analyzing
+Chess Analysis
 ===================
 
-This repository contains a Java project created as part of research internship at INRIA laboratory on chess analyzing.
-You can find different resources to analyse chess games with Stockfish UCI Engine.
+5 millions of chess games have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen.
+We hope to gather various interesting insights on the skills, ratings, or styles of (famous) chess players. 
+In fact numerous applications can be considered such as cheat detection, computation of an intrinsic, "universal" rating, or the determination of key moments chess players blunder. For instance we would like to answer a question like "Who are the best chess players in history?"
+For doing so, you typically need to analyze millions of moves with chess engines; it requires lots of computations. 
 
-#### Statically analyse
+Our goal is to propose an open infrastructure for ```large-scale analysis of chess games```. 
+Specifically, we aim to:
+ * replicate state-of-the-art research results (e.g., on cheat detection or intrinsic ratings); 
+ * provide open data and procedures for exploring new directions;
+ * investigate software engineering/scalability issues when computing millions of moves; 
+ * organize a community of potential contributors for fun and profit.
+ 
+This repository contains a Java project created as part of research internship at Inria/IRISA laboratory on chess analysis. 
+You can find different resources to analyse chess games (e.g., with Stockfish UCI Engine). 
+We are now using [Igrida Cluster](http://igrida.gforge.inria.fr/) for large computations. 
+
+Do not hesitate to participate or contact us! 
+ 
+
+#### Static analysis 
 
  - Parse PGN File and insert each games in a database
  - Parse Games with Spark SQL in order to generate a CSV File
 
-#### Dynamically analyse
+We are writing a technical report on various statistics of the database (e.g., number of unique positions) 
+ 
+
+#### Dynamic analysis 
 
  - Use Stockfish to evaluate games
 
 ----------
 
-Statically Analyze
+Static Analysis 
 -------------
 
-Chess games are save in PGN file , for example
+Chess games are saved in PGN file, for example
 ```
 [Event "FIDE Candidates 2014"]
 [Site "Khanty-Mansiysk RUS"]
@@ -39,19 +58,19 @@ Chess games are save in PGN file , for example
 22. Re1 Rxe1+ 23. Kxe1 O-O 24. Ke2 h6 25. Rg3 Kf7 26. Rh3 Kg6 27. Rg3+ Kf7 28. Rh3 Kg6 29. Rg3+ Kf7 1/2-1/2
 ```
 
-As you have noticed, each PGN file is separated in 2 parts: (1) headers (2) moves
+As you can notice, each PGN file is separated in 2 parts: (1) headers (2) moves
 
-The statically analyze consists to parse each file and inspects each interesting headers information like *White Elo Rating*, *Result* or *Date*. We can also get an iterator on moves to get information about *Pieces Captured Count* or *Pieces Moves Count*...
+The static analysis first parses each file and inspects each interesting headers information like *White Elo Rating*, *Result* or *Date*. We can also get an iterator on moves to get information about *Pieces Captured Count* or *Pieces Moves Count*...
 
-We parse all games with a [Java parser](http://sourceforge.net/projects/pgnparse/) in order to analyze different moves (promotions, king castling, captured pieces...) and generate FEN.
+We parse all games with a [Java parser](http://sourceforge.net/projects/pgnparse/) in order to analyze different moves (promotions, king castling, captured pieces...) and generate FENs.
 
 
 ----------
 
-Dynamically Analyze
+Dynamic Analysis
 -------------
 
-We can calculate intrinsic strength of players with recent UCI Engine. Indeed, we calculate a score and evaluation of each move.
+We calculate a score and evaluation of each move.
 
 | Move                 | Evaluation | Gain  |
 |----------------------|------------|-------|
@@ -69,3 +88,8 @@ info depth 1 seldepth 1 multipv 3 score cp -6 nodes 64 nps 64000 tbhits 0 time 1
 info depth 2 seldepth 2 multipv 1 score cp -8 nodes 199 nps 199000 tbhits 0 time 1 pv d7d5 b2b3
 info depth 2 seldepth 2 multipv 2 score cp -64 nodes 199 nps 199000 tbhits 0 time 1 pv d7d6 d2d3
 info depth 2 seldepth 2 multipv 3 score cp -67 nodes 199 nps 199000 tbhits 0 time 1 pv e7e6 d2d3
+
+#### Contact 
+
+François Esnault (MSc Student, University of Rennes 1) is the main developer and contributor of the project. 
+Mathieu Acher (Associate Professor, University of Rennes 1) is supervising the project. 
