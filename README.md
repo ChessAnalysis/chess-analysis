@@ -88,6 +88,7 @@ info depth 1 seldepth 1 multipv 3 score cp -6 nodes 64 nps 64000 tbhits 0 time 1
 info depth 2 seldepth 2 multipv 1 score cp -8 nodes 199 nps 199000 tbhits 0 time 1 pv d7d5 b2b3
 info depth 2 seldepth 2 multipv 2 score cp -64 nodes 199 nps 199000 tbhits 0 time 1 pv d7d6 d2d3
 info depth 2 seldepth 2 multipv 3 score cp -67 nodes 199 nps 199000 tbhits 0 time 1 pv e7e6 d2d3
+```
 
 #### Contact 
 
