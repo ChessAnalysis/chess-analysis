@@ -4,7 +4,7 @@ Large-scale Analysis of Chess Games
 5 millions of chess games (300+ million of chess positions) have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen. 
 It's time to analyse all of them! 
 
-This repository contains different resources (e.g., Java code) to analyse chess games. ***Current status***:
+This repository contains different resources (e.g., Java code) to analyse chess games. *Current status*:
  * We are writing a technical report on various statistics of the chessgame database (e.g., number of unique positions);
  * We are using [Igrida Cluster](http://igrida.gforge.inria.fr/) for large computations with Stockfish UCI Engine
  
