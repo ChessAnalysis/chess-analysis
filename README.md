@@ -4,13 +4,11 @@ Large-scale Analysis of Chess Games
 5 millions of chess games (300+ million of chess positions) have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen. 
 It's time to analyse all of them! 
 
-This repository contains different resources (e.g., Java code) to analyse chess games. 
-
-Current status:
+This repository contains different resources (e.g., Java code) to analyse chess games. ***Current status***:
  * We are writing a technical report on various statistics of the chessgame database (e.g., number of unique positions);
  * We are using [Igrida Cluster](http://igrida.gforge.inria.fr/) for large computations with Stockfish UCI Engine
  
-Do not hesitate to participate or contact us! 
+**Do not hesitate to participate or contact us!**
 
 #### Objectives
 
@@ -31,7 +29,7 @@ We are essentially analysing headers information (related to players' ratings, d
 We qualify the analysis as "static" (as opposed to "dynamic", see below) since we do not analyse moves with chess engines.
 Until now we have:
  * parsed various PGN files and structure each game in a (relational) database
- * processed games with Spark SQL in order to generate CSV files together with R scripts to derive statistics 
+ * processed games with [Spark SQL](https://spark.apache.org/sql/) in order to generate CSV files together with [R](http://www.r-project.org/) scripts to compute statistics 
 
 *We are writing a technical report on various statistics of the database (e.g., number of unique positions)*
 
@@ -73,7 +71,7 @@ For instance, Stockfish can calculate a score and evaluation of each move:
 | 1 - f6               | 0.12       | 0.00  |
 | 2 - e4               | 0.07       | -0.05 |
 
-We will analyse all generated FEN on Igrida Cluster with Stockfish UCI Engine (e.g., depth 20 with multi-pv 5). All logs are saved in files and afterwards in a (relational) database.
+We will analyse all generated [FEN](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) on [Igrida Cluster](http://igrida.gforge.inria.fr/) with [Stockfish](https://stockfishchess.org/) UCI Engine (e.g., depth 20 with multi-pv 5). All logs are saved in files and afterwards in a (relational) database.
 
 ```
 rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
@@ -87,7 +85,7 @@ info depth 2 seldepth 2 multipv 3 score cp -67 nodes 199 nps 199000 tbhits 0 tim
 
 #### Contact 
 
-François Esnault (MSc Student, University of Rennes 1) is the main developer and contributor of the project. 
-Mathieu Acher (Associate Professor, University of Rennes 1) is supervising the project. 
+This project is part of a research internship at Inria/IRISA laboratory [DiverSE team](http://diverse.irisa.fr) on chess analysis:
+ * François Esnault (MSc Student, University of Rennes 1) is the main developer and contributor of the project. 
+ * Mathieu Acher (Associate Professor, University of Rennes 1) is supervising the project. 
 
-This project is part of a research internship at Inria/IRISA laboratory (DiverSE team) on chess analysis.
