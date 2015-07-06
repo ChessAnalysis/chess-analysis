@@ -1,8 +1,18 @@
-Chess Analysis
+Large-scale Analysis of Chess Games
 ===================
 
-5 millions of chess games have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen. 
+5 millions of chess games (300+ million of chess positions) have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen. 
 It's time to analyse all of them! 
+
+This repository contains different resources (e.g., Java code) to analyse chess games. 
+
+Current status:
+ * We are writing a technical report on various statistics of the chessgame database (e.g., number of unique positions);
+ * We are using [Igrida Cluster](http://igrida.gforge.inria.fr/) for large computations with Stockfish UCI Engine
+ 
+Do not hesitate to participate or contact us! 
+
+#### Objectives
 
 We hope to gather various interesting insights on the skills, ratings, or styles of (famous) chess players. 
 In fact numerous applications can be and have been considered such as cheat detection, computation of an intrinsic, "universal" rating, or the determination of key moments chess players blunder. For instance we would like to answer a question like "Who are the best chess players in history?"
@@ -15,13 +25,6 @@ Specifically, we aim to:
  * investigate software engineering/scalability issues when computing millions of moves; 
  * organize a community of potential contributors for fun and profit.
  
-This repository contains a Java project created as part of research internship at Inria/IRISA laboratory on chess analysis. 
-You can find different resources to analyse chess games (e.g., with Stockfish UCI Engine). 
-We are now using [Igrida Cluster](http://igrida.gforge.inria.fr/) for large computations. 
-
-Do not hesitate to participate or contact us! 
- 
-
 #### Static analysis 
 
 We are essentially analysing headers information (related to players' ratings, dates, openings, etc.). 
@@ -31,15 +34,6 @@ Until now we have:
  * processed games with Spark SQL in order to generate CSV files together with R scripts to derive statistics 
 
 *We are writing a technical report on various statistics of the database (e.g., number of unique positions)*
-
-#### Dynamic analysis 
-
-We are analysing each move (ply) and position with chess engines such as Stockfish.
-
-----------
-
-Static Analysis 
--------------
 
 Chess games are saved in PGN file, for example
 ```
@@ -67,13 +61,11 @@ As you can notice, each PGN file is separated in two parts: (1) headers (2) move
 The static analysis first parses each file and inspects each interesting headers information like *White Elo Rating*, *Result* or *Date*. We can also get an iterator on moves to get information about *Pieces Captured Count* or *Pieces Moves Count*...
 We parse all games with a [Java parser](http://sourceforge.net/projects/pgnparse/) in order to analyze different moves (promotions, king castling, captured pieces...) and generate FENs.
 
+#### Dynamic analysis 
 
-----------
+We aim to analyse each move (ply) and position with chess engines such as Stockfish.
 
-Dynamic Analysis
--------------
-
-We calculate a score and evaluation of each move.
+For instance, Stockfish can calculate a score and evaluation of each move:
 
 | Move                 | Evaluation | Gain  |
 |----------------------|------------|-------|
@@ -81,7 +73,7 @@ We calculate a score and evaluation of each move.
 | 1 - f6               | 0.12       | 0.00  |
 | 2 - e4               | 0.07       | -0.05 |
 
-We will analyse all generated FEN on Igrida Cluster with Stockfish UCI Engine (e.g., depth 20 with multi-pv 5). All logs are saved in files and afterwards in a database.
+We will analyse all generated FEN on Igrida Cluster with Stockfish UCI Engine (e.g., depth 20 with multi-pv 5). All logs are saved in files and afterwards in a (relational) database.
 
 ```
 rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
@@ -97,3 +89,5 @@ info depth 2 seldepth 2 multipv 3 score cp -67 nodes 199 nps 199000 tbhits 0 tim
 
 François Esnault (MSc Student, University of Rennes 1) is the main developer and contributor of the project. 
 Mathieu Acher (Associate Professor, University of Rennes 1) is supervising the project. 
+
+This project is part of a research internship at Inria/IRISA laboratory (DiverSE team) on chess analysis.
