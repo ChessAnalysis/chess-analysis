@@ -1,12 +1,14 @@
 Chess Analysis
 ===================
 
-5 millions of chess games have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen.
-We hope to gather various interesting insights on the skills, ratings, or styles of (famous) chess players. 
-In fact numerous applications can be considered such as cheat detection, computation of an intrinsic, "universal" rating, or the determination of key moments chess players blunder. For instance we would like to answer a question like "Who are the best chess players in history?"
-For doing so, you typically need to analyze millions of moves with chess engines; it requires lots of computations. 
+5 millions of chess games have been recorded from the very beginning of chess history to the last tournaments of Magnus Carlsen. 
+It's time to analyse all of them! 
 
-Our goal is to propose an open infrastructure for ```large-scale analysis of chess games```. 
+We hope to gather various interesting insights on the skills, ratings, or styles of (famous) chess players. 
+In fact numerous applications can be and have been considered such as cheat detection, computation of an intrinsic, "universal" rating, or the determination of key moments chess players blunder. For instance we would like to answer a question like "Who are the best chess players in history?"
+
+For doing so, you typically need to analyze millions of moves with chess engines; it requires lots of computations. 
+Our goal is to propose an open infrastructure for **large-scale analysis of chess games**. 
 Specifically, we aim to:
  * replicate state-of-the-art research results (e.g., on cheat detection or intrinsic ratings); 
  * provide open data and procedures for exploring new directions;
@@ -22,15 +24,17 @@ Do not hesitate to participate or contact us!
 
 #### Static analysis 
 
- - Parse PGN File and insert each games in a database
- - Parse Games with Spark SQL in order to generate a CSV File
+We are essentially analysing headers information (related to players' ratings, dates, openings, etc.). 
+We qualify the analysis as "static" (as opposed to "dynamic", see below) since we do not analyse moves with chess engines.
+Until now we have:
+ * parsed various PGN files and structure each game in a (relational) database
+ * processed games with Spark SQL in order to generate CSV files together with R scripts to derive statistics 
 
-We are writing a technical report on various statistics of the database (e.g., number of unique positions) 
- 
+*We are writing a technical report on various statistics of the database (e.g., number of unique positions)*
 
 #### Dynamic analysis 
 
- - Use Stockfish to evaluate games
+We are analysing each move (ply) and position with chess engines such as Stockfish.
 
 ----------
 
@@ -58,10 +62,9 @@ Chess games are saved in PGN file, for example
 22. Re1 Rxe1+ 23. Kxe1 O-O 24. Ke2 h6 25. Rg3 Kf7 26. Rh3 Kg6 27. Rg3+ Kf7 28. Rh3 Kg6 29. Rg3+ Kf7 1/2-1/2
 ```
 
-As you can notice, each PGN file is separated in 2 parts: (1) headers (2) moves
+As you can notice, each PGN file is separated in two parts: (1) headers (2) moves
 
 The static analysis first parses each file and inspects each interesting headers information like *White Elo Rating*, *Result* or *Date*. We can also get an iterator on moves to get information about *Pieces Captured Count* or *Pieces Moves Count*...
-
 We parse all games with a [Java parser](http://sourceforge.net/projects/pgnparse/) in order to analyze different moves (promotions, king castling, captured pieces...) and generate FENs.
 
 
@@ -78,7 +81,7 @@ We calculate a score and evaluation of each move.
 | 1 - f6               | 0.12       | 0.00  |
 | 2 - e4               | 0.07       | -0.05 |
 
-We will analyse all generated FEN on Igrida Cluster with Stockfish UCI Engine (depth 20 with multi-pv 5). All logs are saved in file.
+We will analyse all generated FEN on Igrida Cluster with Stockfish UCI Engine (e.g., depth 20 with multi-pv 5). All logs are saved in files and afterwards in a database.
 
 ```
 rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
