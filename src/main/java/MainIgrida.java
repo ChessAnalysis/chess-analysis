@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import jline.internal.Log;
 
 import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
 
 import stockfish.StockfishAnalyze;
 
@@ -28,10 +27,12 @@ public class MainIgrida {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
 		if(args.length > 0) {
 			try {
-				StockfishAnalyze jct = new StockfishAnalyze();
-				new JCommander(jct, args);
+				StockfishAnalyze proc = new StockfishAnalyze();
+				new JCommander(proc, args);
+				proc.init();
 			} catch (Exception e) {
-				Log.info("USAGE : java -jar {file-name.jar} -i {input} -pv {multipv} -d {depth}");
+				Log.info(e);
+				Log.info("USAGE : java -jar {file-name.jar} -i {input} -pv {multipv} -d {depth} -t {threads}");
 			}
 		}
 	}

@@ -53,7 +53,7 @@ class SimpleUciEngine implements Engine {
 			Map<String, String> options = preferences.getOptions();
 			for(String name : options.keySet()) {
 				String value = options.get(name);
-
+				Log.info("setoption name " + name + " value " + value);
 				write("setoption name " + name + " value " + value);
 			}
 
@@ -70,18 +70,9 @@ class SimpleUciEngine implements Engine {
 
 	private synchronized void disconnect() {
 		try {
-			try {
-				int exitValue = process.exitValue();
-				Log.error("Process already terminated with exit code " + exitValue);
-			} catch(IllegalThreadStateException e) {
-				Log.error("Process needs to be terminated" + " " + e);
-			}
-
-			Log.debug("Terminating the process");
 			process.destroy();
-
 		} catch(Exception e) {
-			throw new IllegalStateException("Unable to disconnect", e);
+			Log.info("Unable to disconnect " + e);
 		} finally {
 			toEngine = null;
 			fromEngine = null;
