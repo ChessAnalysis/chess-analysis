@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import jline.internal.Log;
 
+import com.beust.jcommander.Parameter;
 import com.google.common.io.Files;
 
 import engine.Engine;
@@ -26,17 +27,20 @@ public class StockfishAnalyze {
 	private static EnginePreferences prefs = new EnginePreferences();
 	private static int count;
 	private static Engine engine;
+	
+	@Parameter(names = "-d", description = "Depth")
+	private Integer depth = 20;
+	
+	@Parameter(names = "-pv", description = "Multipv")
+	private String multipv = "1";
+	
+	@Parameter(names = "-i", description = "File")
+	private Integer file = 0;
 
-	/**
-	 * Constructor for StockfishAnalyze.
-	 * @param file Integer
-	 * @throws SQLException
-	 * @throws IOException
-	 */
-	public StockfishAnalyze(Integer file) throws SQLException, IOException {
-		prefs.setOption("multipv", "5");
+	public StockfishAnalyze() throws SQLException, IOException {
+		prefs.setOption("multipv", multipv);
 		prefs.setOption("Threads", "1");
-		prefs.setDepth(20);
+		prefs.setDepth(depth);
 		
 		engine = EngineFactory.getInstance().createEngine("/temp_dd/igrida-fs1/fesnault/SCRATCH" + STOCKFISH_IGRIDA, prefs);
 		
@@ -44,7 +48,6 @@ public class StockfishAnalyze {
 		long startTimeParsed = System.nanoTime();
 		initFile(file);
 		Log.info("Parsed in " + ((System.nanoTime() - startTimeParsed)/1000000) + " ms.");
-		
 	}
 
 	/**
