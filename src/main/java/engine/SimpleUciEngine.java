@@ -35,41 +35,48 @@ class SimpleUciEngine implements Engine {
 		this.preferences = preferences;
 	}
 
-	private synchronized void connect() {
-		try {
-			this.process = Runtime.getRuntime().exec(this.command);
-
-			// Use the system charset
-			this.toEngine = new PrintWriter(new OutputStreamWriter(process.getOutputStream(), "UTF-8"));
-			this.fromEngine = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
-
-			skipLines(1);
-
-			Log.debug("Computing best move");
-			write("uci");
-
-			readUntil("uciok");
-
-			Map<String, String> options = preferences.getOptions();
-			for(String name : options.keySet()) {
-				String value = options.get(name);
-				Log.info("setoption name " + name + " value " + value);
-				write("setoption name " + name + " value " + value);
+	private void connect() {
+		
+		if(this.process == null) {
+			try {
+				this.process = Runtime.getRuntime().exec(this.command);
+	
+				// Use the system charset
+				this.toEngine = new PrintWriter(new OutputStreamWriter(process.getOutputStream(), "UTF-8"));
+				this.fromEngine = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+	
+				skipLines(1);
+	
+				Log.debug("Computing best move");
+				write("uci");
+	
+				readUntil("uciok");
+	
+				Map<String, String> options = preferences.getOptions();
+				for(String name : options.keySet()) {
+					String value = options.get(name);
+					Log.info("setoption name " + name + " value " + value);
+					write("setoption name " + name + " value " + value);
+				}
+	
+				write("isready");
+	
+				assertReply("readyok");
+	
+				write("ucinewgame");
+	
+			} catch(Exception e) {
+				throw new IllegalStateException("Unable to initialize", e);
 			}
-
+		} else {
 			write("isready");
-
 			assertReply("readyok");
-
 			write("ucinewgame");
-
-		} catch(Exception e) {
-			throw new IllegalStateException("Unable to initialize", e);
 		}
 	}
 
 	private synchronized void disconnect() {
-		try {
+		/*try {
 			process.destroy();
 		} catch(Exception e) {
 			Log.info("Unable to disconnect " + e);
@@ -77,7 +84,7 @@ class SimpleUciEngine implements Engine {
 			toEngine = null;
 			fromEngine = null;
 			process = null;
-		}
+		}*/
 	}
 
 	/**
@@ -235,10 +242,11 @@ class SimpleUciEngine implements Engine {
 	 */
 	@Override
 	public String computeScore(String fen) {
+		
+		
 
 		try {
 			connect();
-
 			write("position fen " + fen);
 			write("go depth " + preferences.getDepth());
 
@@ -254,6 +262,7 @@ class SimpleUciEngine implements Engine {
 					sb.append(line + "\n");
 				}
 			}
+			
 			return sb.toString();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -262,6 +271,8 @@ class SimpleUciEngine implements Engine {
 		} finally {
 			disconnect();
 		}
+		
+		
 		return fen;
 	}
 

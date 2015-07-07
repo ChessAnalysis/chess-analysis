@@ -77,14 +77,11 @@ public class StockfishAnalyze {
 			sb.append(currentFEN + "\n");
 			sb.append(engine.computeScore(currentFEN));
 			sb.append("---\n");
-			Log.info(count++);
-			
-			if((count%5)==0) {
-				Log.info("Save...");
-				Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/fen/o" + i), Charset.defaultCharset());
-				sb.setLength(0);
-			}
+			Log.info(file + " #" + count++);
 		}
+		Log.info("Save...");
+		Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/fen/o" + i), Charset.defaultCharset());
+		sb.setLength(0);
 	}
 
 	public static EnginePreferences getPrefs() {
