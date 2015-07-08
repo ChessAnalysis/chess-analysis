@@ -43,7 +43,7 @@ public class StockfishAnalyze {
 	private String threads = "1";
 	
 	@Parameter(names = "-i", description = "File")
-	private Integer file = 0;
+	private String file = "";
 	
 	public void init() throws SQLException, IOException {
 		prefs.setOption("multipv", multipv);
@@ -54,7 +54,7 @@ public class StockfishAnalyze {
 		
 		Log.info("Début de l'analyse dynamique avec Stockfish");
 		long startTimeParsed = System.nanoTime();
-		initFile(file);
+		initFile();
 		Log.info("Parsed in " + ((System.nanoTime() - startTimeParsed)/1000000) + " ms.");
 	}
 
@@ -64,9 +64,8 @@ public class StockfishAnalyze {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	private void initFile(Integer i) throws SQLException, IOException {
-		
-		URL url = getClass().getResource("/x0"+i); 
+	private void initFile() throws SQLException, IOException {
+		URL url = getClass().getResource("/x"+file); 
 		
 		InputStream is = url.openStream();
 		
@@ -80,7 +79,7 @@ public class StockfishAnalyze {
 			Log.info(file + " #" + count++);
 		}
 		Log.info("Save...");
-		Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/fen/o" + i), Charset.defaultCharset());
+		Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/fen/o" + file), Charset.defaultCharset());
 		sb.setLength(0);
 	}
 
@@ -140,11 +139,11 @@ public class StockfishAnalyze {
 		this.threads = threads;
 	}
 
-	public Integer getFile() {
+	public String getFile() {
 		return file;
 	}
 
-	public void setFile(Integer file) {
+	public void setFile(String file) {
 		this.file = file;
 	}
 
