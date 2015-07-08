@@ -5,6 +5,12 @@ This program use Igrida Cluster (INRIA Rennes) but you can definitely use your c
 
 This program analyse FEN list files with Stockfish UCI Engine and produces log file (for each depth, we record a lot of information).
 
+Your file tree need to look like this one :
+> ├── fen (directory)<br/>
+> ├── run.jar<br/>
+> ├── run.sh<br/>
+> └── uci-engine (directory)<br/>
+
 ## Steps to retrieve FEN ##
 
 You can see an example of expected files in the resource folder (https://github.com/fresnault/chess-analysis/tree/master/resources).
