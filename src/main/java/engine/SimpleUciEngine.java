@@ -255,11 +255,11 @@ class SimpleUciEngine implements Engine {
 			while((line=read())!=null) {
 				//System.out.println(line);
 				if(line.contains("bestmove")) {
-					sb.append(line + "\n");
+					sb.append(line + ". ");
 					break;
 				}
 				if(!line.contains("currmove")) {
-					sb.append(line + "\n");
+					sb.append(line + ". ");
 				}
 			}
 			

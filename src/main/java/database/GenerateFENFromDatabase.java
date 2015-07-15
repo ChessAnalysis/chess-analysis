@@ -24,7 +24,6 @@ import config.ConfigSQL;
  */
 public class GenerateFENFromDatabase {
 	
-	private Map<String, Integer> fenMap;
 	private Connection connexion;
 	private static int count = 0;
 
@@ -40,11 +39,14 @@ public class GenerateFENFromDatabase {
 	 * @throws AmbiguousChessMoveException
 	 * @throws IllegalMoveException
 	 */
-	public GenerateFENFromDatabase(ConfigSQL config, int i, Map<String, Integer> fenMap) throws IOException, InterruptedException, ClassNotFoundException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
+	public GenerateFENFromDatabase(ConfigSQL config, int i) throws IOException, InterruptedException, ClassNotFoundException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
 		Class.forName(config.getDriver());
 		this.connexion = DriverManager.getConnection(config.getUrl() + config.getDb() + "?user=" + config.getUser() + "&password=" + config.getPass() + "&rewriteBatchedStatements=true");
-		this.connexion.setAutoCommit(false);
-		this.fenMap = fenMap;
+		this.connexion.setAutoCommit(true);
+		Statement stmt = connexion.createStatement();
+		stmt.execute("ALTER TABLE Move DISABLE KEYS");
+		stmt.execute("SET GLOBAL FOREIGN_KEY_CHECKS=0");
+		stmt.close();
 		init(i);
 	}
 
@@ -59,17 +61,12 @@ public class GenerateFENFromDatabase {
 	 */
 	public void init(int i) throws IOException, InterruptedException, SQLException, AmbiguousChessMoveException, IllegalMoveException {
 
-		
-		
 		ChessBoard board;
 		SAN san = new SAN();
 		FEN fen = new FEN();
 		Move move = null;
 		
-		PreparedStatement insertFEN = connexion.prepareStatement("INSERT INTO FEN (id, fen) VALUES (?, ?)");
 		PreparedStatement insertMove = connexion.prepareStatement("INSERT INTO Move (idGame, halfMove, move, idFEN) VALUES (?, ?, ?, ?)");
-		
-		int currentID = 0;
 		
 		Statement st = connexion.createStatement();
 		
@@ -85,12 +82,8 @@ public class GenerateFENFromDatabase {
 		ResultSet rs = st.executeQuery("select id, movesSAN from Game LIMIT " + 50000 + " OFFSET " + (i*50000));
 		while (rs.next()) {
 			count++;
-			if((count%100)==0) {
-				System.out.println(count + "...");
-			}
 			if((count%10000)==0) {
-				System.out.println("insertions des parties parsées...");
-				insertFEN.executeBatch();
+				System.out.println(count + "...");
 				insertMove.executeBatch();
 			}
 			board = new ChessBoard();
@@ -100,24 +93,17 @@ public class GenerateFENFromDatabase {
 
 			stoken = new StringTokenizer(moves);
 			while (stoken.hasMoreTokens() && stoken.countTokens() != 1) {
-				insertMove.setInt(1, rs.getInt(1));
+				
 				token = stoken.nextToken();
 				if(!token.contains(".")) {
 					move = san.stringToMove(board, token);
 					board.playMove(move);
+					currentFEN = fen.boardToString(board);
+					
+					insertMove.setInt(1, rs.getInt(1));
 					insertMove.setInt(2, halfMove++);
 					insertMove.setString(3, token);
-					currentFEN = fen.boardToString(board);
-					if(fenMap.containsKey(currentFEN)) {
-						insertMove.setInt(4, (int)fenMap.get(currentFEN));
-					} else {
-						fenMap.put(currentFEN, ++currentID);
-						insertFEN.setInt(1, currentID);
-						insertFEN.setString(2, currentFEN);
-						insertFEN.addBatch();
-						insertMove.setInt(4, currentID);
-					}
-					
+					insertMove.setString(4, currentFEN);
 					
 					insertMove.addBatch();
 				}
@@ -127,11 +113,8 @@ public class GenerateFENFromDatabase {
 		System.out.println("Parsed in " + ((System.nanoTime() - startTimeParsed)/1000000) + " ms.");
 		
 		startTimeParsed = System.nanoTime();
-		insertFEN.executeBatch();
-		insertFEN.close();
 		insertMove.executeBatch();
 		insertMove.close();
-		connexion.commit();
 		connexion.close();
 		
 		System.out.println("Inserted in " + ((System.nanoTime() - startTimeParsed)/1000000) + " ms.");

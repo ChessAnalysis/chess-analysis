@@ -20,14 +20,23 @@ remove_lock () {
   rmdir "${path}.lock.d"
 }
 
-create_lock_or_wait
-if [ -e ${cnt} ] ; then
+analyse_file () {
+  create_lock_or_wait
+  if [ -e ${cnt} ] ; then
 	count=$(cat ${cnt})
-else
+  else
 	count=-1
-fi
-echo ${count}
-((count++))
-echo ${count} > ${cnt}
-remove_lock
-/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java -jar run.jar ${count}
+  fi
+  ((count++))
+  echo ${count} > ${cnt}
+  remove_lock
+  /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java -jar run.jar ${count}
+}
+
+
+while [[ ${count} -lt 9010 ]] ; do
+	analyse_file
+	((count++))
+	echo ${count}
+done
+

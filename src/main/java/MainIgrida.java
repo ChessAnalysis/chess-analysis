@@ -30,7 +30,8 @@ public class MainIgrida {
 		try {
 			StockfishAnalyze proc = new StockfishAnalyze();
 			DecimalFormat nf = new DecimalFormat("0000");
-			String[] argv = {"-d", "19", "-t", "1", "pv", "1", "-i", nf.format(Integer.valueOf(args[0]))};
+			System.out.println(nf.format(Integer.valueOf(args[0])));
+			String[] argv = {"-d", "20", "-t", "1", "pv", "1", "-i", nf.format(Integer.valueOf(args[0]))};
 			new JCommander(proc, argv);
 			proc.init();
 		} catch (Exception e) {

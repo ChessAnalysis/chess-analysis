@@ -2,10 +2,10 @@ package stockfish;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -65,21 +65,23 @@ public class StockfishAnalyze {
 	 * @throws IOException
 	 */
 	private void initFile() throws SQLException, IOException {
-		URL url = getClass().getResource("/x"+file); 
-		
-		InputStream is = url.openStream();
+		InputStream is = new FileInputStream(new File("/temp_dd/igrida-fs1/fesnault/SCRATCH/input/" + file));
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String currentFEN;
 		StringBuilder sb = new StringBuilder();
 		while ((currentFEN = br.readLine()) != null) {
-			sb.append(currentFEN + "\n");
+			sb.append(currentFEN + "\t");
 			sb.append(engine.computeScore(currentFEN));
-			sb.append("---\n");
-			Log.info(file + " #" + count++);
+			sb.append("\n");
+			if((++count%50)==0) {
+				Log.info(file + " #" + count);
+				Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/output/" + file), Charset.defaultCharset());
+				sb.setLength(0);
+			}
 		}
-		Log.info("Save...");
-		Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/fen/o" + file), Charset.defaultCharset());
+		Log.info("Execution Successfully Terminated...");
+		Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/output/" + file), Charset.defaultCharset());
 		sb.setLength(0);
 	}
 

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import jline.console.ConsoleReader;
 import jline.internal.Log;
 import config.ConfigSQL;
+import database.GenerateFENFromDatabase;
 import database.InsertECOToDatabase;
 import database.InsertPGNToDatabase;
 
@@ -32,13 +33,13 @@ public class Main {
 		ConsoleReader reader = new ConsoleReader();
 		PrintWriter out = new PrintWriter(reader.getOutput());
 		out.print("Quel traitement ?\n[1] Insert Database\n[2] Chess Analysis\n");
-		String line;
+		/*String line;
 		while ((line = reader.readLine("> ")) != null) {
 			switch(line) {
 			case "1" :
 				// INSERT OPENINGS
 				Log.info("Insertion des codes ECO dans la base de données");
-				new InsertECOToDatabase(connexion);
+				//new InsertECOToDatabase(connexion);
 
 				// INSERT PGN FILES
 				Log.info("Insertion des parties PGN dans la base de données");
@@ -63,6 +64,9 @@ public class Main {
 				//new StockfishAnalyze(connexion);
 				break;
 			}
+		}*/
+		for(int i = 1; i < 100; i++) {
+			new GenerateFENFromDatabase(connexion, i);
 		}
 	}
 }
