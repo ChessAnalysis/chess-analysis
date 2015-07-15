@@ -65,7 +65,10 @@ public class Main {
 				break;
 			}
 		}*/
-		for(int i = 1; i < 100; i++) {
+		
+		int MIN = 0;
+		int MAX = 1;
+		for(int i = MIN; i < MAX; i++) {
 			new GenerateFENFromDatabase(connexion, i);
 		}
 	}
