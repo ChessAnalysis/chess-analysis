@@ -6,36 +6,52 @@ This program use Igrida Cluster (INRIA Rennes) but you can definitely use your c
 This program analyse FEN list files with Stockfish UCI Engine and produces log file (for each depth, we record a lot of information).
 
 Your file tree need to look like this one :
-> ├── fen (directory)<br/>
+> HOME DIRECTORY<br/>
 > ├── run.jar<br/>
-> ├── run.sh<br/>
+> ├── job.sh<br/>
+> ├── param-file.txt<br/>
 > └── uci-engine (directory)<br/>
+
+> TEMP DISK DIRECTORY<br/>
+> ├── input (directory)<br/>
+> └── output (directory)<br/>
+
 
 ## Steps to retrieve FEN ##
 
 You can see an example of expected files in the resource folder (https://github.com/fresnault/chess-analysis/tree/master/resources).
 
- 1. Get list of 100 000 FEN from database
-> mysql --host=127.0.0.1 --user=root --password=password--port=XXXX -e”SELECT id FROM chess.FEN LIMIT 100000” > {file-name}.txt
+ 1. Get list of N FEN from database
+> mysql --host=127.0.0.1 --user=root --password=password --port=XXXX -e”SELECT id FROM chess.FEN LIMIT N” > {file-name}.txt
 
- 2. Split FEN file
-> split -d -l 1000 {file-name}.txt
+ 2. Split FEN file (M lines)
+> split -a 4 -d -l M {file-name}.txt<br/>
+> split -a 4 -d -l 1000 {file-name}.txt
 
 We have 100 files each with 1000 FEN. You need to put these files in the resource folder.
 
 ## Run the program on Igrida ##
 
  1. Connect to Igrida
+
 > ssh $USER@igrida-oar-frontend
 
- 2. Reserve n cores
-> oarsub -I -l /core=n,walltime=03:00:00
-> oarsub -I -l /core=100,walltime=03:00:00 to reserve 100 cores during 3 hours
+ 2. Edit the param-file<br/>
 
- 3. Run parallel processus with mpi
-> mpirun --mca plm_rsh_agent “oarsh” -machinefile $OAR_NODEFILE bash run.sh
+You need to put parameters in param-file.txt file.
+For example, if you want analyse 1000 and 1001 file, you can put
+> -i 1000 -d 19 -t 1 -pv 1<br/>
+> -i 1001 -d 19 -t 1 -pv 1
 
-The run.sh bash program use a file lock to increment a counter. In fact, we run n java program with counter arguments (ie: "-i 30").
+Or simply<br/>
+> -i 1000<br/>
+> -i 1001
+
+ 3. Edit configuration file job.sh (number of cores, walltime)
+
+ 4. Reserve cores
+
+> oarsub -S ./job.sh
 
 Congratulations, you are analyzing 100 000 FEN on 100 cores.
-Your log files are recorded in the temporary hard drive (/temp_dd/igrida-fs1/$USER/SCRATCH/fen)
+Your log files are recorded in the temporary hard drive (/temp_dd/igrida-fs1/$USER/SCRATCH/output)
