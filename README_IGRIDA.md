@@ -32,26 +32,18 @@ We have 100 files each with 1000 FEN. You need to put these files in the resourc
 
 ## Run the program on Igrida ##
 
- 1. Connect to Igrida
-
+ 1. Connect to Igrida<br/>
 > ssh $USER@igrida-oar-frontend
-
  2. Edit the param-file<br/>
-
 You need to put parameters in param-file.txt file.
 For example, if you want analyse 1000 and 1001 file, you can put
 > -i 1000 -d 19 -t 1 -pv 1<br/>
 > -i 1001 -d 19 -t 1 -pv 1
-
 Or simply<br/>
 > -i 1000<br/>
 > -i 1001
-
- 3. Edit configuration file job.sh (number of cores, walltime)
-
- 4. Reserve cores
-
-> oarsub -S ./job.sh
-
+ 3. Edit configuration file job.sh (number of cores, walltime)<br/>
+ 4. Reserve cores<br/>
+> oarsub -S ./job.sh<br/>
 Congratulations, you are analyzing 100 000 FEN on 100 cores.
 Your log files are recorded in the temporary hard drive (/temp_dd/igrida-fs1/$USER/SCRATCH/output)
