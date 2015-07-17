@@ -7,16 +7,16 @@ This program analyse FEN list files with Stockfish UCI Engine and produces log f
 
 Your file tree need to look like this one :
 
-> HOME DIRECTORY
-> ├── run.jar
-> ├── job.sh
-> ├── param-file.txt
-> └── uci-engine (directory)
+    HOME DIRECTORY
+    ├── run.jar
+    ├── job.sh
+    ├── param-file.txt
+    └── uci-engine (directory)
 
-> TEMP DISK DIRECTORY
-> ├── input (directory)
-> └── output (directory)
 
+    TEMP DISK DIRECTORY
+    ├── input (directory)
+    └── output (directory)
 
 ## Steps to retrieve FEN ##
 
@@ -24,12 +24,12 @@ You can see an example of expected files in the resource folder (`https://github
 
 1) Get list of N FEN from database
 
-`mysql --host=127.0.0.1 --user=root --password=password --port=XXXX -e”SELECT id FROM chess.FEN LIMIT N” > {file-name}.txt`
+    mysql --host=127.0.0.1 --user=root --password=password --port=XXXX -e”SELECT id FROM chess.FEN LIMIT N” > {file-name}.txt
 
 2) Split FEN file (M lines)
 
-`split -a 4 -d -l M {file-name}.txt`
-`split -a 4 -d -l 1000 {file-name}.txt`
+    split -a 4 -d -l M {file-name}.txt
+    split -a 4 -d -l 1000 {file-name}.txt
 
 We have 100 files each with 1000 FEN. You need to put these files in the resource folder.
 
@@ -37,26 +37,26 @@ We have 100 files each with 1000 FEN. You need to put these files in the resourc
 
 1) Connect to Igrida
 
-`ssh $USER@igrida-oar-frontend`
+    ssh $USER@igrida-oar-frontend
 
 2) Edit the param-file
 
 You need to put parameters in param-file.txt file.
 For example, if you want analyse 1000 and 1001 file, you can put
 
-`-i 1000 -d 19 -t 1 -pv 1`
-`-i 1001 -d 19 -t 1 -pv 1`
+    -i 1000 -d 19 -t 1 -pv 1
+    -i 1001 -d 19 -t 1 -pv 1
 
 Or simply
 
-`-i 1000`
-`-i 1001`
+    -i 1000
+    -i 1001
 
 3) Edit configuration file job.sh (number of cores, walltime)
 
 4) Reserve cores
 
-`oarsub -S ./job.sh`
+    oarsub -S ./job.sh
 
 Congratulations, you are analyzing 100 000 FEN on 100 cores.
 Your log files are recorded in the temporary hard drive (/temp_dd/igrida-fs1/$USER/SCRATCH/output)
