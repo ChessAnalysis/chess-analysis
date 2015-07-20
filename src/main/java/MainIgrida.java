@@ -27,16 +27,16 @@ public class MainIgrida {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
 		
+		for(int i = 0; i < args.length; i++) {
+			System.out.println(args[i]);
+		}
 		try {
 			StockfishAnalyze proc = new StockfishAnalyze();
-			DecimalFormat nf = new DecimalFormat("0000");
-			System.out.println(nf.format(Integer.valueOf(args[0])));
-			String[] argv = {"-d", "20", "-t", "1", "pv", "1", "-i", nf.format(Integer.valueOf(args[0]))};
-			new JCommander(proc, argv);
+			new JCommander(proc, args);
 			proc.init();
 		} catch (Exception e) {
 			Log.info(e);
-			Log.info("USAGE : java -jar {file-name.jar} -i {input} -pv {multipv} -d {depth} -t {threads}");
+			Log.info("USAGE : java -jar {file-name.jar} -i {input} -pv {multipv} -d {depth} -t {threads} -m {mode}");
 		}
 		
 	}

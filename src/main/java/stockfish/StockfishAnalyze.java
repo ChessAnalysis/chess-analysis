@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +46,13 @@ public class StockfishAnalyze {
 	@Parameter(names = "-i", description = "File")
 	private String file = "";
 	
+	@Parameter(names = "-m", description = "Mode")
+	private int mode = 0;
+	
 	public void init() throws SQLException, IOException {
 		prefs.setOption("multipv", multipv);
 		prefs.setOption("Threads", threads);
+		//prefs.setOption("Hash", "1024");
 		prefs.setDepth(depth);
 		
 		engine = EngineFactory.getInstance().createEngine("/temp_dd/igrida-fs1/fesnault/SCRATCH" + STOCKFISH_IGRIDA, prefs);
@@ -65,7 +70,22 @@ public class StockfishAnalyze {
 	 * @throws IOException
 	 */
 	private void initFile() throws SQLException, IOException {
-		InputStream is = new FileInputStream(new File("/temp_dd/igrida-fs1/fesnault/SCRATCH/input/" + file));
+		
+		DecimalFormat nf = new DecimalFormat("0000");
+		file = nf.format(Integer.valueOf(file));
+		
+		String pathI = "/temp_dd/igrida-fs1/fesnault/SCRATCH/input/";
+		String pathO = "/temp_dd/igrida-fs1/fesnault/SCRATCH/output/";
+		
+		if(mode==1) {
+			pathI = "/temp_dd/igrida-fs1/fesnault/SCRATCH1/input/x";
+			pathO = "/temp_dd/igrida-fs1/fesnault/SCRATCH1/output/";
+		} else if(mode==2) {
+			pathI = "/temp_dd/igrida-fs1/fesnault/SCRATCH2/input/x";
+			pathO = "/temp_dd/igrida-fs1/fesnault/SCRATCH2/output/";
+		}
+		
+		InputStream is = new FileInputStream(new File(pathI + file));
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String currentFEN;
@@ -76,12 +96,12 @@ public class StockfishAnalyze {
 			sb.append("\n");
 			if((++count%50)==0) {
 				Log.info(file + " #" + count);
-				Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/output/" + file), Charset.defaultCharset());
+				Files.append(sb, new File(pathO + file), Charset.defaultCharset());
 				sb.setLength(0);
 			}
 		}
 		Log.info("Execution Successfully Terminated...");
-		Files.append(sb, new File("/temp_dd/igrida-fs1/fesnault/SCRATCH" + "/output/" + file), Charset.defaultCharset());
+		Files.append(sb, new File(pathO + file), Charset.defaultCharset());
 		sb.setLength(0);
 	}
 
