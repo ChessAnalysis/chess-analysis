@@ -20,5 +20,8 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ictk-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/rJava/jri/JRI.jar"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/rJava/jri/JRIEngine.jar"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/rJava/jri/REngine.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
