@@ -59,7 +59,7 @@ if(nbUniqueEloRating < 100) {
 	p3 = ggplot(df1, aes(differenceElo, moves)) 					+ xlab("Difference in Elo Rating") 	+ ylab("Ply per Game") 						+ ggtitle("3. Ply per Game") 						+ stat_smooth()									+ xlim(0, 1000)
 	p4 = ggplot(df2, aes(differenceElo, higherEloWin))				+ xlab("Difference in Elo Rating") 	+ ylab("% Games win by Higher Elo Rating") 	+ ggtitle("4. % Games win by Higher Elo Rating") 	+ stat_smooth(method="glm", family="binomial")	+ xlim(0, 1000)
 	p5 = ggplot(df3, aes(whiteElo, whiteWin)) 						+ xlab("Elo Rating") 				+ ylab("% Games win by White Player") 		+ ggtitle("5. % Games win by White Player") 		+ stat_smooth(method="glm", family="binomial")	+ xlim(1600, 2800)
-	p6 = ggplot(df4, aes(winnerElo, fill = stringResult)) 			+ xlab("Average Elo Rating of Players") + ylab("% Games Resulting in a Win") 	+ ggtitle("6. % Games Resulting in a Win By Color") + stat_density(aes(y = ..density..), position = "fill", color = "grey") + scale_fill_manual(values=c("#ffffff", "#000000", "#99CCFF", "#cccccc")) + xlim(1500, 3000)
+	p6 = ggplot(df4, aes(winnerElo, fill = stringResult)) 			+ xlab("Average Elo Rating of Players") + ylab("% Games Resulting in a Win") 	+ ggtitle("6. % Games Resulting in a Win By Color") + stat_density(aes(y = ..density..), position = "fill", color = "grey") + scale_fill_manual(values=c("#ffffff", "#000000", "#99CCFF", "#cccccc")) + xlim(1600, 2800)
 }
 
 }
@@ -111,7 +111,7 @@ if(nbUniqueDate < 10) {
 ########################
 
 if(nbUniqueDate > 10) {
-	firstMoveWhite = revalue(games[,6], c("a3"="Other", "a4"="Other", "b3"="Other", "b4"="Other", "c3"="Other", "d3"="Other", "e3"="Other", "f4"="Other", "g3"="Other", "g4"="Other", "h3"="Other", "h4"="Other", "Nc3"="Other", "Nh3"="Other", "h6"="Other"))
+	firstMoveWhite = revalue(games[,6], c("a3"="Other", "a4"="Other", "b3"="Other", "b4"="Other", "c3"="Other", "d3"="Other", "e3"="Other", "f4"="Other", "g3"="Other", "g4"="Other", "h3"="Other", "h4"="Other", "Nc3"="Other", "Nh3"="Other", "h6"="Other", "f3"="Other", "Na3"="Other"))
 	#firstMoveBlack = revalue(games[,7], c("a3"="Other", "a4"="Other", "b3"="Other", "b4"="Other", "c3"="Other", "d3"="Other", "e3"="Other", "f4"="Other", "g3"="Other", "g4"="Other", "h3"="Other", "h4"="Other", "Nc3"="Other", "Nh3"="Other"))
 	checkMate = games[,8]
 	capturedPiecesRate = as.numeric(games[,9]/moves)
