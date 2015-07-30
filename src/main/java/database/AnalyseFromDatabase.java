@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import stockfish.RowLog;
-import stockfish.RowsLog;
+import stockfish.Move;
 import jline.internal.Log;
 import config.ConfigSQL;
 
@@ -30,7 +30,7 @@ public class AnalyseFromDatabase {
 		Statement stmt = connexion.createStatement();
 		
 		ResultSet rs = stmt.executeQuery("SELECT id FROM Game limit 1;");
-		List<RowsLog> list = new ArrayList<RowsLog>();
+		List<Move> list = new ArrayList<Move>();
 		
 		while (rs.next()) {
 			int idGame = rs.getInt(1);
@@ -38,14 +38,14 @@ public class AnalyseFromDatabase {
 			list.add(analyseGame(idGame));
 		}
 		
-		Iterator<RowsLog> it = list.iterator();
+		Iterator<Move> it = list.iterator();
 		while(it.hasNext()) {
-			RowsLog tmpRows = it.next();
+			Move tmpRows = it.next();
 			Log.info(tmpRows.toAnalyse());
 		}
 	}
 
-	private RowsLog analyseGame(int idGame) throws SQLException, ClassNotFoundException {
+	private Move analyseGame(int idGame) throws SQLException, ClassNotFoundException {
 		Statement stmt = connexion.createStatement();
 		
 		ResultSet rs = stmt.executeQuery("SELECT Move.move, FEN2.id, FEN2.log FROM Move, Game, FEN2 WHERE Game.id = " + idGame + " AND Game.id = Move.idGame AND Move.idFEN = FEN2.id ORDER BY Move.halfMove ASC");
@@ -53,7 +53,7 @@ public class AnalyseFromDatabase {
 		String crtFEN;
 		String crtLOG = "";
 		
-		RowsLog rows = new RowsLog();
+		Move rows = new Move();
 		
 		while (rs.next()) {
 			crtFEN = rs.getString(2);

@@ -81,7 +81,7 @@ public class InsertECOToDatabase {
 						//System.out.println(line2);
 						line2 = line2.trim();
 
-						if (line2.charAt(0) == '[') {
+						if (line2.startsWith("[")) {
 							String tagName = line2.substring(1, line2.indexOf(" "));
 							String tagValue = line2.substring(line2.indexOf("\"") + 1,
 									line2.lastIndexOf("\""));

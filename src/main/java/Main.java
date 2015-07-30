@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import stockfish.ParseDatabase;
 import jline.console.ConsoleReader;
 import jline.internal.Log;
 import config.ConfigSQL;
+import database.GenerateECOFromDatabase;
 import database.GenerateFENFromDatabase;
 import database.InsertECOToDatabase;
 import database.InsertPGNToDatabase;
+import database.UpdateFENFromFile;
 
 /**
  */
@@ -29,10 +32,29 @@ public class Main {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
 
-		ConfigSQL connexion= new ConfigSQL("diverse");
-		ConsoleReader reader = new ConsoleReader();
-		PrintWriter out = new PrintWriter(reader.getOutput());
-		out.print("Quel traitement ?\n[1] Insert Database\n[2] Chess Analysis\n");
+		ConfigSQL connexion= new ConfigSQL("localhost");
+		
+		// 1 - INSERT OPENING INTO DATABASE
+		//new InsertECOToDatabase(connexion);
+		
+		// 2 - GENERATE MOVES ECO FROM DATABASE
+		//new GenerateECOFromDatabase(connexion);
+		
+		// 3 - INSERT PGN FILES
+		//new InsertPGNToDatabase(new File("resources/10games.pgn").getAbsolutePath(), connexion);
+		
+		// 4 - GENERATE MOVES FROM DATABASE
+		//new GenerateFENFromDatabase(connexion, 0);
+		
+		// 5 - UPDATE FEN
+		//new UpdateFENFromFile(connexion);
+		
+		// 6 - ANALYSE DATABASE
+		new ParseDatabase(connexion);
+		
+		//ConsoleReader reader = new ConsoleReader();
+		//PrintWriter out = new PrintWriter(reader.getOutput());
+		//out.print("Quel traitement ?\n[1] Insert Database\n[2] Chess Analysis\n");
 		/*String line;
 		while ((line = reader.readLine("> ")) != null) {
 			switch(line) {
@@ -66,10 +88,10 @@ public class Main {
 			}
 		}*/
 		
-		int MIN = 0;
+		/*int MIN = 0;
 		int MAX = 1;
 		for(int i = MIN; i < MAX; i++) {
 			new GenerateFENFromDatabase(connexion, i);
-		}
+		}*/
 	}
 }

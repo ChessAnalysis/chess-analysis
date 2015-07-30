@@ -1,5 +1,5 @@
 #OAR -n test_passif
-#OAR -l /core=1,walltime=07:30:00
+#OAR -l /core=8,walltime=7:10:00
 #OAR --array-param-file /udd/fesnault/param-file.txt
 #OAR -O /temp_dd/igrida-fs1/fesnault/SCRATCH/igrida.%jobid%.output
 #OAR -E /temp_dd/igrida-fs1/fesnault/SCRATCH/igrida.%jobid%.output

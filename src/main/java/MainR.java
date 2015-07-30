@@ -57,7 +57,7 @@ public class MainR {
 		re.eval("library(ggplot2)");
 		re.eval("library(plyr)");
 
-		re.eval("games = read.csv(\"/Users/fesnault/git/chess-analysis/resources/csv/database.csv\", head=TRUE, sep=\",\")");
+		re.eval("games = read.csv(\"/Users/fesnault/database.csv\", head=TRUE, sep=\",\")");
 		re.eval("clearGames = subset(games, whiteElo>1600 & blackElo>1600, result != \"-1\") ");
 		re.eval("nbData = length(games[,1])");
 		re.eval("nbClearData = length(clearGames[,1])");
@@ -97,7 +97,7 @@ public class MainR {
 
 				re.eval("differenceElo = abs(whiteElo-blackElo)");
 				re.eval("df1 <- data.frame(differenceElo, moves)");
-				re.eval("df2 <- subset(data.frame(differenceElo, higherEloWin, result), result != 2)");
+				/*re.eval("df2 <- subset(data.frame(differenceElo, higherEloWin, result), result != 2)");
 				re.eval("df3 <- subset(data.frame(whiteElo, whiteWin, result), result != 2)");
 				re.eval("df4 <- subset(data.frame(winnerElo, stringResult), stringResult != \"3\")");
 
@@ -108,11 +108,11 @@ public class MainR {
 				re.eval("p4 = ggplot(df2, aes(differenceElo, higherEloWin))				+ xlab(\"Difference in Elo Rating\") 	+ ylab(\"% Games win by Higher Elo Rating\") 	+ ggtitle(\"4. % Games win by Higher Elo Rating\") 	+ stat_smooth(method=\"glm\", family=\"binomial\")	+ xlim(0, 1000)");
 				re.eval("p5 = ggplot(df3, aes(whiteElo, whiteWin)) 						+ xlab(\"Elo Rating\") 				+ ylab(\"% Games win by White Player\") 		+ ggtitle(\"5. % Games win by White Player\") 		+ stat_smooth(method=\"glm\", family=\"binomial\")	+ xlim(1600, 2800)");
 				re.eval("p6 = ggplot(df4, aes(winnerElo, fill = stringResult)) 			+ xlab(\"Average Elo Rating of Players\") + ylab(\"% Games Resulting in a Win\") 	+ ggtitle(\"6. % Games Resulting in a Win By Color\") + stat_density(aes(y = ..density..), position = \"fill\", color = \"grey\") + scale_fill_manual(values=c(\"#ffffff\", \"#000000\", \"#99CCFF\", \"#cccccc\")) + xlim(1600, 2800)");
-
+				*/
 			}
 		}
 
-		re.eval("whiteElo = games[,1]");
+		/*re.eval("whiteElo = games[,1]");
 		re.eval("blackElo = games[,2]");
 		re.eval("moves = games[,3]");
 		re.eval("result = games[,4]");
@@ -127,9 +127,9 @@ public class MainR {
 		re.eval("stringResult = revalue(factor(games[,4]), c(\"0\"=\"White\", \"1\"=\"Black\", \"2\"=\"Draw\"))");
 		re.eval("for(i in 1:nbData) { if(result[i] == 0) { winnerElo[i] = whiteElo[i] } else if(result[i] == 1) { winnerElo[i] = blackElo[i] } else { winnerElo[i] = max(whiteElo[i],blackElo[i]) } }");
 
-		REXP nbUniqueDate = re.eval("nbUniqueDate");
+		REXP nbUniqueDate = re.eval("nbUniqueDate");*/
 
-		if(nbUniqueDate.asInt() < 10) {
+		/*if(nbUniqueDate.asInt() < 10) {
 			Log.info("Les parties ne sont pas assez espacées dans le temps pour faire une analyse selon la date");
 		} else {
 			Log.info("Analyse des " + nbUniqueDate.asInt() + " uniques dates...");
@@ -176,33 +176,58 @@ public class MainR {
 			re.eval("df21 <- data.frame(date, queenSideCastlingRate) ");
 			re.eval("p21 = ggplot(df21, aes(date, queenSideCastlingRate)) 		+ xlim(1850, 2015)	+ xlab(\"Date\") 	+ ylab(\"Queen Side Castling Rate\") 	+ ggtitle(\"21. Queen Side Castling Rate\") 	+ stat_smooth(method=\"glm\", family=\"binomial\")");		
 
-		}
+		}*/
 
+		
 		if(nbClearData.asInt() > 0 && nbUniqueEloRating.asInt() > 100) {
-			re.eval("ggsave(\"resources/graphs/1-EloRating.png\", plot = p1)");
-			re.eval("ggsave(\"resources/graphs/2-DifferenceEloRating.png\", plot = p2)");
-			re.eval("ggsave(\"resources/graphs/3-PlyPerGame.png\", plot = p3)");
-			re.eval("ggsave(\"resources/graphs/4-GameWinByHogherEloRating.png\", plot = p4)");
-			re.eval("ggsave(\"resources/graphs/5-GamesWinByWhitePlayer.png\", plot = p5)");
-			re.eval("ggsave(\"resources/graphs/6-GameResultingWinByColor.png\", plot = p6)");
+			Log.info("Print graph... 0/21");
+			re.eval("ggsave(file=\"test.svg\", plot=p1, width=10, height=8)");
+			re.eval("ggsave(p1, file=\"resources/graphs/test.svg\", width=4, height=4, dpi=100)");
+			System.exit(0);
+			/*Log.info("Print graph... 1/21");
+			re.eval("ggsave(\"resources/graphs/2-DifferenceEloRating.svg\", plot = p2)");
+			Log.info("Print graph... 2/21");
+			re.eval("ggsave(\"resources/graphs/3-PlyPerGame.svg\", plot = p3)");
+			Log.info("Print graph... 3/21");
+			re.eval("ggsave(\"resources/graphs/4-GameWinByHogherEloRating.svg\", plot = p4)");
+			Log.info("Print graph... 4/21");
+			re.eval("ggsave(\"resources/graphs/5-GamesWinByWhitePlayer.svg\", plot = p5)");
+			Log.info("Print graph... 5/21");
+			re.eval("ggsave(\"resources/graphs/6-GameResultingWinByColor.svg\", plot = p6)");*/
 		}
-		if(nbUniqueDate.asInt() > 10) {
-			re.eval("ggsave(\"resources/graphs/7-DistributionOfDateMatch.png\", plot = p7)");
-			re.eval("ggsave(\"resources/graphs/8-PlyPerGame.png\", plot = p8)");
-			re.eval("ggsave(\"resources/graphs/9-GamesWinByWhitePlayer.png\", plot = p9)");
-			re.eval("ggsave(\"resources/graphs/10-GamesResultingWinByColor.png\", plot = p10)");
-			re.eval("ggsave(\"resources/graphs/11-FirstMoveWhite.png\", plot = p11)");
-			re.eval("ggsave(\"resources/graphs/11-FirstMoveWhiteZoom.png\", plot = p12)");
-			re.eval("ggsave(\"resources/graphs/13-GameWinByCheckMate.png\", plot = p13)");
-			re.eval("ggsave(\"resources/graphs/14-RatioCapturedPieces.png\", plot = p14)");
-			re.eval("ggsave(\"resources/graphs/15-RookMoveRate.png\", plot = p15)");
-			re.eval("ggsave(\"resources/graphs/16-KnightMoveRate.png\", plot = p16)");
-			re.eval("ggsave(\"resources/graphs/17-PawnMoveRate.png\", plot = p17)");
-			re.eval("ggsave(\"resources/graphs/18-QueenMoveRate.png\", plot = p18)");
-			re.eval("ggsave(\"resources/graphs/19-PromotedRate.png\", plot = p19)");
-			re.eval("ggsave(\"resources/graphs/20-KingSideCastlingRate.png\", plot = p20)");
-			re.eval("ggsave(\"resources/graphs/21-QueenSideCastlingRate.png\", plot = p21)");
-		}
+		/*if(nbUniqueDate.asInt() > 10) {
+			Log.info("Print graph... 6/21");
+			re.eval("ggsave(\"resources/graphs/7-DistributionOfDateMatch.svg\", plot = p7)");
+			Log.info("Print graph... 7/21");
+			re.eval("ggsave(\"resources/graphs/8-PlyPerGame.svg\", plot = p8)");
+			Log.info("Print graph... 8/21");
+			re.eval("ggsave(\"resources/graphs/9-GamesWinByWhitePlayer.svg\", plot = p9)");
+			Log.info("Print graph... 9/21");
+			re.eval("ggsave(\"resources/graphs/10-GamesResultingWinByColor.svg\", plot = p10)");
+			Log.info("Print graph... 10/21");
+			re.eval("ggsave(\"resources/graphs/11-FirstMoveWhite.svg\", plot = p11)");
+			Log.info("Print graph... 11/21");
+			re.eval("ggsave(\"resources/graphs/11-FirstMoveWhiteZoom.svg\", plot = p12)");
+			Log.info("Print graph... 12/21");
+			re.eval("ggsave(\"resources/graphs/13-GameWinByCheckMate.svg\", plot = p13)");
+			Log.info("Print graph... 13/21");
+			re.eval("ggsave(\"resources/graphs/14-RatioCapturedPieces.svg\", plot = p14)");
+			Log.info("Print graph... 14/21");
+			re.eval("ggsave(\"resources/graphs/15-RookMoveRate.svg\", plot = p15)");
+			Log.info("Print graph... 15/21");
+			re.eval("ggsave(\"resources/graphs/16-KnightMoveRate.svg\", plot = p16)");
+			Log.info("Print graph... 16/21");
+			re.eval("ggsave(\"resources/graphs/17-PawnMoveRate.svg\", plot = p17)");
+			Log.info("Print graph... 17/21");
+			re.eval("ggsave(\"resources/graphs/18-QueenMoveRate.svg\", plot = p18)");
+			Log.info("Print graph... 18/21");
+			re.eval("ggsave(\"resources/graphs/19-PromotedRate.svg\", plot = p19)");
+			Log.info("Print graph... 19/21");
+			re.eval("ggsave(\"resources/graphs/20-KingSideCastlingRate.svg\", plot = p20)");
+			Log.info("Print graph... 20/21");
+			re.eval("ggsave(\"resources/graphs/21-QueenSideCastlingRate.svg\", plot = p21)");
+			Log.info("Print graph... 21/21");
+		}*/
 	}
 	
 	
