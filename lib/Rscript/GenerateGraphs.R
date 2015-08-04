@@ -1,11 +1,9 @@
 library(ggplot2) 
 library(plyr)
 
-args <- commandArgs(trailingOnly = TRUE)
-path = paste(args[1])
 
-games = read.csv(path, head=FALSE, sep=",")
-clearGames = subset(games, V1>1600 & V2>1600, V4 != "-1") 
+games = read.csv("/Users/fesnault/database.csv", head=TRUE, sep=",")
+clearGames = subset(games, whiteElo>1600 & blackElo>1600, result != "-1") 
 
 nbData = length(games[,1])
 nbClearData = length(clearGames[,1])
@@ -111,7 +109,59 @@ if(nbUniqueDate < 10) {
 ########################
 
 if(nbUniqueDate > 10) {
-	firstMoveWhite = revalue(games[,6], c("a3"="Other", "a4"="Other", "b3"="Other", "b4"="Other", "c3"="Other", "d3"="Other", "e3"="Other", "f4"="Other", "g3"="Other", "g4"="Other", "h3"="Other", "h4"="Other", "Nc3"="Other", "Nh3"="Other", "h6"="Other", "f3"="Other", "Na3"="Other"))
+	firstMoveWhite = revalue(games[,6], c(
+		"a3"="Other",
+		"a4"="Other",
+		"c3"="Other",
+		"d3"="Other",
+		"e3"="Other",
+		"g4"="Other",
+		"h3"="Other",
+		"h4"="Other",
+		"Nh3"="Other",
+		"h6"="Other",
+		"f3"="Other",
+		"Na3"="Other",
+		"Bxc1"="Other",
+		"Bxg2"="Other",
+		"d5"="Other",
+		"Bd3"="Other",
+		"Kb8"="Other",
+		"Bxg3"="Other",
+		"f5"="Other",
+		"Nbc6"="Other",
+		"exd5"="Other",
+		"Nd3"="Other",
+		"Bxf3"="Other",
+		"Qf5"="Other",
+		"Bh3"="Other",
+		"Nf5"="Other",
+		"Bh4+"="Other",
+		"Kh6"="Other",
+		"Qf7+"="Other",
+		"c7"="Other",
+		"Rh1"="Other",
+		"Nf4"="Other",
+		"Kf2"="Other",
+		"Ne5"="Other",
+		"Bf4"="Other",
+		"Ra3"="Other",
+		"Rc7"="Other",
+		"Rc1+"="Other",
+		"Rg5"="Other",
+		"c5"="Other",
+		"Rc3"="Other",
+		"Qf2+"="Other",
+		"dxc7"="Other",
+		"Kb3"="Other",
+		"Rf8+"="Other",
+		"Ne6+"="Other",
+		"O-O-O"="Other",
+		"Ne4"="Other",
+		"e5"="Other",
+		"Ng6"="Other")
+	)
+	                              
 	#firstMoveBlack = revalue(games[,7], c("a3"="Other", "a4"="Other", "b3"="Other", "b4"="Other", "c3"="Other", "d3"="Other", "e3"="Other", "f4"="Other", "g3"="Other", "g4"="Other", "h3"="Other", "h4"="Other", "Nc3"="Other", "Nh3"="Other"))
 	checkMate = games[,8]
 	capturedPiecesRate = as.numeric(games[,9]/moves)
@@ -125,7 +175,8 @@ if(nbUniqueDate > 10) {
 	#rook = games[,9]
 	
 	df11 <- data.frame(date, firstMoveWhite) 
-	p11 = ggplot(df11, aes(date, fill = firstMoveWhite)) 	+ xlim(1900, 2015)	+ stat_density(aes(y = ..density..), position = "fill", color = "black") + xlab("Date") + ylab("Count") + ggtitle("11. First Move White")
+	#p11 = ggplot(df11, aes(date, fill = firstMoveWhite)) 	+ xlim(1900, 2015)	+ stat_density(aes(y = ..density..), position = "fill", color = "black") + xlab("Date") + ylab("Count") + ggtitle("11. First Move White")
+	p11 = ggplot(df11, aes(date, fill = firstMoveWhite)) + geom_bar(position="fill", binwidth=2.5) + xlim(1950, 2015)
 	
 	df12 <- data.frame(date, firstMoveWhite) 
 	p12 = ggplot(df11, aes(date, fill = firstMoveWhite)) 	+ xlim(1950, 2015)	+ stat_density(aes(y = ..density..), position = "fill", color = "black") + xlab("Date") + ylab("Count") + ggtitle("12. First Move White - Zoom")
@@ -160,29 +211,33 @@ if(nbUniqueDate > 10) {
 }
 
 if(nbClearData > 0 && nbUniqueEloRating > 100) {
-	#ggsave("resources/tmp/1-EloRating.png", plot = p1)
-	#ggsave("resources/tmp/2-DifferenceEloRating.png", plot = p2)
-	#ggsave("resources/tmp/3-PlyPerGame.png", plot = p3)
-	#ggsave("resources/tmp/4-GameWinByHogherEloRating.png", plot = p4)
-	#ggsave("resources/tmp/5-GamesWinByWhitePlayer.png", plot = p5)
-	#ggsave("resources/tmp/6-GameResultingWinByColor.png", plot = p6)
+	ggsave("resources/tmp/1-EloRating.svg", plot = p1)
+	ggsave("resources/tmp/2-DifferenceEloRating.svg", plot = p2)
+	ggsave("resources/tmp/3-PlyPerGame.svg", plot = p3)
+	ggsave("resources/tmp/4-GameWinByHogherEloRating.svg", plot = p4)
+	ggsave("resources/tmp/5-GamesWinByWhitePlayer.svg", plot = p5)
+	ggsave("resources/tmp/6-GameResultingWinByColor.svg", plot = p6)
 }
 if(nbUniqueDate > 10) {
-	#ggsave("resources/tmp/7-DistributionOfDateMatch.png", plot = p7)
-	#ggsave("resources/tmp/8-PlyPerGame.png", plot = p8)
-	#ggsave("resources/tmp/9-GamesWinByWhitePlayer.png", plot = p9)
-	#ggsave("resources/tmp/10-GamesResultingWinByColor.png", plot = p10)
-	#ggsave("resources/tmp/11-FirstMoveWhite.png", plot = p11)
-	#ggsave("resources/tmp/11-FirstMoveWhiteZoom.png", plot = p12)
-	#ggsave("resources/tmp/13-GameWinByCheckMate.png", plot = p13)
-	#ggsave("resources/tmp/14-RatioCapturedPieces.png", plot = p14)
-	#ggsave("resources/tmp/15-RookMoveRate.png", plot = p15)
-	#ggsave("resources/tmp/16-KnightMoveRate.png", plot = p16)
-	#ggsave("resources/tmp/17-PawnMoveRate.png", plot = p17)
-	#ggsave("resources/tmp/18-QueenMoveRate.png", plot = p18)
-	#ggsave("resources/tmp/19-PromotedRate.png", plot = p19)
-	#ggsave("resources/tmp/20-KingSideCastlingRate.png", plot = p20)
-	#ggsave("resources/tmp/21-QueenSideCastlingRate.png", plot = p21)
+	ggsave("resources/tmp/7-DistributionOfDateMatch.svg", plot = p7)
+	ggsave("resources/tmp/8-PlyPerGame.svg", plot = p8)
+	ggsave("resources/tmp/9-GamesWinByWhitePlayer.svg", plot = p9)
+	ggsave("resources/tmp/10-GamesResultingWinByColor.svg", plot = p10)
+	ggsave("resources/tmp/11-FirstMoveWhite.svg", plot = p11)
+	ggsave("resources/tmp/11-FirstMoveWhiteZoom.svg", plot = p12)
+	ggsave("resources/tmp/13-GameWinByCheckMate.svg", plot = p13)
+	ggsave("resources/tmp/14-RatioCapturedPieces.svg", plot = p14)
+	ggsave("resources/tmp/15-RookMoveRate.svg", plot = p15)
+	ggsave("resources/tmp/16-KnightMoveRate.svg", plot = p16)
+	ggsave("resources/tmp/17-PawnMoveRate.svg", plot = p17)
+	ggsave("resources/tmp/18-QueenMoveRate.svg", plot = p18)
+	ggsave("resources/tmp/19-PromotedRate.svg", plot = p19)
+	ggsave("resources/tmp/20-KingSideCastlingRate.svg", plot = p20)
+	ggsave("resources/tmp/21-QueenSideCastlingRate.svg", plot = p21)
 }
 
+
+#> df30 = subset(na.omit(data.frame(date, maxElo)), maxElo >2500 & maxElo<2900)
+#> p30 = ggplot(df30, aes(date, maxElo))
+#> p30 + geom_point(aes(colour = maxElo))
 
