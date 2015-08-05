@@ -61,7 +61,18 @@ We parse all games with a [Java parser](http://sourceforge.net/projects/pgnparse
 
 #### Dynamic analysis 
 
-We aim to analyse each move (ply) and position with chess engines such as Stockfish.
+We will analyse all generated [FEN](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) on [Igrida Cluster](http://igrida.gforge.inria.fr/) with [Stockfish](https://stockfishchess.org/) UCI Engine (e.g., depth 20 with multi-pv 1). All logs are saved in files and afterwards in a (relational) database.
+
+```
+rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
+info depth 1 seldepth 1 multipv 1 score cp 783 nodes 47 nps 47000 time 1 pv e4b4.
+info depth 2 seldepth 2 multipv 1 score cp 807 nodes 119 nps 119000 time 1 pv e4b4 e6e7 b4b2 c2c1.
+info depth 3 seldepth 4 multipv 1 score cp 813 nodes 213 nps 106500 time 2 pv e4b4 e6e7 b4b2 c2c1 f4d3 c1d1.
+info depth 4 seldepth 6 multipv 1 score cp 813 nodes 351 nps 175500 time 2 pv e4b4 e6e7 b4b2 c2c1 f4d3 c1d1.
+info depth 5 seldepth 7 multipv 1 score cp 905 nodes 711 nps 355500 time 2 pv e4b4 e6e7 b4b2 c2c1 f4d3 c1d1 a3a2.
+info depth 6 seldepth 9 multipv 1 score cp 1056 nodes 2120 nps 706666 time 3 pv e4b4 e6e7 b4b2 c2c3 f4d5 c3d3 d5e7 h4h5.
+...
+```
 
 For instance, Stockfish can calculate a score and evaluation of each move:
 
@@ -83,19 +94,10 @@ For instance, Stockfish can calculate a score and evaluation of each move:
 | 72  | [37] | Ke3   |       | -2.6  | -2.44 | Erreur  | 
 | 73  | [37] |       | c5    | -2.91 | 0.31  |         | 
 
+We can easily generates the evolution score of the game, in fact :
 
-We will analyse all generated [FEN](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) on [Igrida Cluster](http://igrida.gforge.inria.fr/) with [Stockfish](https://stockfishchess.org/) UCI Engine (e.g., depth 20 with multi-pv 1). All logs are saved in files and afterwards in a (relational) database.
+![Evolution of Score](resources/analyse_4784903.png "Evolution of Score")
 
-```
-rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
-info depth 1 seldepth 1 multipv 1 score cp 783 nodes 47 nps 47000 time 1 pv e4b4.
-info depth 2 seldepth 2 multipv 1 score cp 807 nodes 119 nps 119000 time 1 pv e4b4 e6e7 b4b2 c2c1.
-info depth 3 seldepth 4 multipv 1 score cp 813 nodes 213 nps 106500 time 2 pv e4b4 e6e7 b4b2 c2c1 f4d3 c1d1.
-info depth 4 seldepth 6 multipv 1 score cp 813 nodes 351 nps 175500 time 2 pv e4b4 e6e7 b4b2 c2c1 f4d3 c1d1.
-info depth 5 seldepth 7 multipv 1 score cp 905 nodes 711 nps 355500 time 2 pv e4b4 e6e7 b4b2 c2c1 f4d3 c1d1 a3a2.
-info depth 6 seldepth 9 multipv 1 score cp 1056 nodes 2120 nps 706666 time 3 pv e4b4 e6e7 b4b2 c2c3 f4d5 c3d3 d5e7 h4h5.
-...
-```
 
 ### Key numbers
 
