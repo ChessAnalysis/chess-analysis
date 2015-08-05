@@ -237,7 +237,11 @@ if(nbUniqueDate > 10) {
 }
 
 
-#> df30 = subset(na.omit(data.frame(date, maxElo)), maxElo >2500 & maxElo<2900)
+#> df30 = subset(na.omit(data.frame(date, maxElo)), maxElo >2800 & maxElo<2900)
 #> p30 = ggplot(df30, aes(date, maxElo))
 #> p30 + geom_point(aes(colour = maxElo))
 
+
+#> library(plotly)
+#> py <- plotly()
+#> py$ggplotly(save30)
