@@ -12,8 +12,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import jline.internal.Log;
-
 import com.beust.jcommander.Parameter;
 import com.google.common.io.Files;
 
@@ -57,10 +55,8 @@ public class StockfishAnalyze {
 		
 		engine = EngineFactory.getInstance().createEngine("/temp_dd/igrida-fs1/fesnault/SCRATCH" + STOCKFISH_IGRIDA, prefs);
 		
-		Log.info("Début de l'analyse dynamique avec Stockfish");
 		long startTimeParsed = System.nanoTime();
 		initFile();
-		Log.info("Parsed in " + ((System.nanoTime() - startTimeParsed)/1000000) + " ms.");
 	}
 
 	/**
@@ -88,12 +84,10 @@ public class StockfishAnalyze {
 			sb.append(engine.computeScore(currentFEN));
 			sb.append("\n");
 			if((++count%50)==0) {
-				Log.info(file + " #" + count);
 				Files.append(sb, new File(pathO + file), Charset.defaultCharset());
 				sb.setLength(0);
 			}
 		}
-		Log.info("Execution Successfully Terminated...");
 		Files.append(sb, new File(pathO + file), Charset.defaultCharset());
 		sb.setLength(0);
 	}

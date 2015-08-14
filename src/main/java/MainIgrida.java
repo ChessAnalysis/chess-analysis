@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
-import jline.internal.Log;
-
 import com.beust.jcommander.JCommander;
 
 import stockfish.StockfishAnalyze;
@@ -32,8 +30,7 @@ public class MainIgrida {
 			new JCommander(proc, args);
 			proc.init();
 		} catch (Exception e) {
-			Log.info(e);
-			Log.info("USAGE : java -jar {file-name.jar} -p {path} -i {filename} -pv {multipv} -d {depth} -t {threads}");
+			System.out.print("USAGE : java -jar {file-name.jar} -p {path} -i {filename} -pv {multipv} -d {depth} -t {threads}");
 		}
 		
 	}

@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import jline.internal.Log;
-
 /**
  */
 class SimpleUciEngine implements Engine {
@@ -47,7 +45,6 @@ class SimpleUciEngine implements Engine {
 	
 				skipLines(1);
 	
-				Log.debug("Computing best move");
 				write("uci");
 	
 				readUntil("uciok");
@@ -55,7 +52,6 @@ class SimpleUciEngine implements Engine {
 				Map<String, String> options = preferences.getOptions();
 				for(String name : options.keySet()) {
 					String value = options.get(name);
-					Log.info("setoption name " + name + " value " + value);
 					write("setoption name " + name + " value " + value);
 				}
 	
@@ -109,11 +105,9 @@ class SimpleUciEngine implements Engine {
 
 			String res = readStartsWith("bestmove");
 
-			Log.debug("Best move found: " + res);
-
 			return getToken(res, 1);
 		} catch(Exception e) {
-			Log.error("Best move not found, exception");
+			System.out.print("Best move not found, exception");
 			throw new IllegalStateException(e);
 		} finally {
 			disconnect();
@@ -127,7 +121,6 @@ class SimpleUciEngine implements Engine {
 	private String read() {
 		try {
 			String read = fromEngine.readLine();
-			Log.debug("UCI-READ : " + read);
 			return read;
 		} catch(IOException e) {
 			throw new IllegalStateException("Unable to read from stream", e);
@@ -229,7 +222,6 @@ class SimpleUciEngine implements Engine {
 	 * @param command String
 	 */
 	private void write(String command) {
-		Log.debug("UCI-WRITE: " + command);
 		toEngine.println(command);
 		toEngine.flush();
 	}
@@ -296,7 +288,6 @@ class SimpleUciEngine implements Engine {
 			Map<String, String> options = preferences.getOptions();
 			for(String name : options.keySet()) {
 				String value = options.get(name);
-				Log.debug("setoption name " + name + " value " + value);
 				write("setoption name " + name + " value " + value);
 			}
 
@@ -306,9 +297,7 @@ class SimpleUciEngine implements Engine {
 
 			write("ucinewgame");
 
-			Log.debug("position fen " + fen);
 			write("position fen " + fen);
-			Log.debug("go depth " + preferences.getDepth());
 			write("go depth " + preferences.getDepth());
 
 			String res = "";
@@ -326,14 +315,12 @@ class SimpleUciEngine implements Engine {
 				try {
 					return "#" + getToken(res, 9);
 				} catch(NullPointerException e) {
-					Log.error("Cannot return score " + e);
 					return "#";
 				}
 			else
 				return getToken(res, 9);
 
 		} catch(Exception e) {
-			Log.error("Cannot return score " + e); 
 			return "#";
 		} finally {
 			disconnect();
