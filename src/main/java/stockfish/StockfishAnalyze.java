@@ -46,8 +46,8 @@ public class StockfishAnalyze {
 	@Parameter(names = "-i", description = "File")
 	private String file = "";
 	
-	@Parameter(names = "-m", description = "Mode")
-	private int mode = 0;
+	@Parameter(names = "-p", description = "Path")
+	private String path = "";
 	
 	public void init() throws SQLException, IOException {
 		prefs.setOption("multipv", multipv);
@@ -74,16 +74,9 @@ public class StockfishAnalyze {
 		DecimalFormat nf = new DecimalFormat("0000");
 		file = nf.format(Integer.valueOf(file));
 		
-		String pathI = "/temp_dd/igrida-fs1/fesnault/SCRATCH/input/";
-		String pathO = "/temp_dd/igrida-fs1/fesnault/SCRATCH/output/";
 		
-		if(mode==1) {
-			pathI = "/temp_dd/igrida-fs1/fesnault/SCRATCH1/input/x";
-			pathO = "/temp_dd/igrida-fs1/fesnault/SCRATCH1/output/";
-		} else if(mode==2) {
-			pathI = "/temp_dd/igrida-fs1/fesnault/SCRATCH2/input/x";
-			pathO = "/temp_dd/igrida-fs1/fesnault/SCRATCH2/output/";
-		}
+		String pathI = path + "/input/";
+		String pathO = path + "/output/";
 		
 		InputStream is = new FileInputStream(new File(pathI + file));
 		

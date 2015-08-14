@@ -27,16 +27,13 @@ public class MainIgrida {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
 		
-		for(int i = 0; i < args.length; i++) {
-			System.out.println(args[i]);
-		}
 		try {
 			StockfishAnalyze proc = new StockfishAnalyze();
 			new JCommander(proc, args);
 			proc.init();
 		} catch (Exception e) {
 			Log.info(e);
-			Log.info("USAGE : java -jar {file-name.jar} -i {input} -pv {multipv} -d {depth} -t {threads} -m {mode}");
+			Log.info("USAGE : java -jar {file-name.jar} -p {path} -i {filename} -pv {multipv} -d {depth} -t {threads}");
 		}
 		
 	}

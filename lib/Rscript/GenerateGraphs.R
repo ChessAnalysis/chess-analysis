@@ -245,3 +245,11 @@ if(nbUniqueDate > 10) {
 #> library(plotly)
 #> py <- plotly()
 #> py$ggplotly(save30)
+
+#openings = read.csv("/Users/fesnault/opening.csv", head=TRUE, sep=",")
+#opening = openings[,1]
+#library(data.table)
+#dt = data.table(df)
+#df2 = subset(as.data.frame.matrix(dt[, count := .N, by = opening][count >= 50000]), count > 50000)
+#pie <- ggplot(df2, aes(x = factor(1), fill = factor(opening))) + geom_bar(width = 1) + coord_polar(theta="y")
+

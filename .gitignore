@@ -1,3 +1,8 @@
 /target/
 /src/main/java/config/ConfigSQL.java
 /resources/csv/*
+Igrida/job.sh
+
+Igrida/oardel.sh
+
+Igrida/param-file.txt

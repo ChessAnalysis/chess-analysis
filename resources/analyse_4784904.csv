@@ -1,3 +1,4 @@
+sep=","
 Ply,Move,White,Black,Score,Eval,Comment
 0,[1],d4,,0.21,0.21,
 1,[1],,Nf6,0.11,0.1,

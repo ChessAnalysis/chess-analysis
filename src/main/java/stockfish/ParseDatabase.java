@@ -37,7 +37,7 @@ public class ParseDatabase {
 		
 		getGames();
 		
-		Set<Integer> keys = games.keySet();
+		/*Set<Integer> keys = games.keySet();
 		Log.info(keys);
 		Iterator<Integer> itKeys = keys.iterator();
 		while(itKeys.hasNext()) {
@@ -46,7 +46,7 @@ public class ParseDatabase {
 			List<RowLog> scores = moves.getBestScores();
 			analyseScores(idGame, scores);
 		}
-		System.exit(0);
+		System.exit(0);*/
 	}
 
 	private void analyseScores(int idGame, List<RowLog> scores) throws IOException {
@@ -174,6 +174,9 @@ public class ParseDatabase {
 						case 6 : depth.setMultipv(Integer.valueOf(t)); break;
 						case 8 : depth.setScoreType(t); break;
 						case 9 : depth.setScoreResult(Integer.valueOf(t)); break;
+						case 11 : if(depth.getDepth()==20) {
+							Log.info(t);
+						}
 						}
 						k++;
 					}

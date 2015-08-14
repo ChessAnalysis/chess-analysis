@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import stockfish.ParseDatabase;
 import jline.console.ConsoleReader;
 import jline.internal.Log;
 import config.ConfigSQL;
@@ -28,17 +29,18 @@ public class MainDatabase {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
 
-		ConfigSQL connexion= new ConfigSQL("diverse2");
+		ConfigSQL connexion= new ConfigSQL("localhost");
+		new ParseDatabase(connexion);
 		
 		// 1 - INSERT OPENING INTO DATABASE
-		Log.info("[1] INSERT OPENING INTO DATABASE");
-		new InsertECOToDatabase(connexion);
+		/*Log.info("[1] INSERT OPENING INTO DATABASE");
+		new InsertECOToDatabase(connexion);*/
 		
 		// 2 - GENERATE MOVES ECO FROM DATABASE
 		//new GenerateECOFromDatabase(connexion);
 		
 		// 3 - INSERT PGN FILES
-		Log.info("Insertion des parties PGN dans la base de données");
+		/*Log.info("Insertion des parties PGN dans la base de données");
 		String[] filesName;
 		File[] files;
 
@@ -54,7 +56,7 @@ public class MainDatabase {
 				Log.info("> " + file.getAbsolutePath());
 				new InsertPGNToDatabase(file.getAbsolutePath(), connexion);
 			}
-		} 
+		} */
 		
 		// 4 - GENERATE MOVES FROM DATABASE
 		//new GenerateFENFromDatabase(connexion, 0);
