@@ -1,6 +1,3 @@
-import ictk.boardgame.IllegalMoveException;
-import ictk.boardgame.chess.AmbiguousChessMoveException;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -22,7 +19,7 @@ public class MainIgrida {
 	 * @throws AmbiguousChessMoveException
 	 * @throws IllegalMoveException
 	 */
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException, AmbiguousChessMoveException, IllegalMoveException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
 		
 		try {
 			StockfishAnalyze proc = new StockfishAnalyze();

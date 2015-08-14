@@ -18,6 +18,6 @@ public class GenerateArguments {
 			sb.append("-p " + path + " -i " + i + "\n");
 		}
 		
-		Files.write(sb, new File("./resources/param-file.txt"), Charset.defaultCharset());
+		Files.write(sb, new File("./resources/igrida/param-file.txt"), Charset.defaultCharset());
 	}
 }

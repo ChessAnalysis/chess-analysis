@@ -96,7 +96,7 @@ For instance, Stockfish can calculate a score and evaluation of each move:
 
 We can easily generates the evolution score of the game, in fact :
 
-![Evolution of Score](resources/analyse_4784903.png "Evolution of Score")
+![Evolution of Score](resources/images/analyse_4784903.png "Evolution of Score")
 
 
 ### Key numbers

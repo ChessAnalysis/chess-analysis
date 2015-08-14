@@ -17,10 +17,14 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/ictk-1.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/rJava/jri/JRI.jar"/>
-	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/rJava/jri/JRIEngine.jar"/>
-	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.1/Resources/library/rJava/jri/REngine.jar"/>
+	<classpathentry kind="lib" path="/Users/fesnault/.m2/repository/com/google/guava/guava/18.0/guava-18.0.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.google.guava"/>
+			<attribute name="maven.artifactId" value="guava"/>
+			<attribute name="maven.version" value="18.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
