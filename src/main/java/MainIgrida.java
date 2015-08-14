@@ -3,7 +3,6 @@ import ictk.boardgame.chess.AmbiguousChessMoveException;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 
 import com.beust.jcommander.JCommander;
 

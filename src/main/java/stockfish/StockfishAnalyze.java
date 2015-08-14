@@ -46,6 +46,8 @@ public class StockfishAnalyze {
 	
 	@Parameter(names = "-p", description = "Path")
 	private String path = "";
+
+	private BufferedReader br;
 	
 	public void init() throws SQLException, IOException {
 		prefs.setOption("multipv", multipv);
@@ -54,8 +56,7 @@ public class StockfishAnalyze {
 		prefs.setDepth(depth);
 		
 		engine = EngineFactory.getInstance().createEngine("/temp_dd/igrida-fs1/fesnault/SCRATCH" + STOCKFISH_IGRIDA, prefs);
-		
-		long startTimeParsed = System.nanoTime();
+
 		initFile();
 	}
 
@@ -76,7 +77,7 @@ public class StockfishAnalyze {
 		
 		InputStream is = new FileInputStream(new File(pathI + file));
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		br = new BufferedReader(new InputStreamReader(is));
 		String currentFEN;
 		StringBuilder sb = new StringBuilder();
 		while ((currentFEN = br.readLine()) != null) {
