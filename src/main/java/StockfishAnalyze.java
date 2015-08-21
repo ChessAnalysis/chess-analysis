@@ -4,11 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +23,12 @@ import engine.EnginePreferences;
 public class StockfishAnalyze {
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
-		
+		StockfishAnalyze proc = new StockfishAnalyze();
+		JCommander commands = new JCommander(proc, args);
 		try {
-			StockfishAnalyze proc = new StockfishAnalyze();
-			new JCommander(proc, args);
 			proc.init();
 		} catch (Exception e) {
-			System.out.print(e);
-			System.out.print("USAGE : java -jar {file-name.jar} -p {path} -i {filename} -pv {multipv} -d {depth} -t {threads} -e {path-to-engine}");
+			commands.usage();
 		}
 		
 	}
@@ -46,26 +42,29 @@ public class StockfishAnalyze {
 	@Parameter
 	private List<String> parameters = new ArrayList<String>();
 	
-	@Parameter(names = { "-log", "-verbose" }, description = "Level of verbosity (default 0)")
+	@Parameter(names = { "-log", "-verbose" }, description = "Level of verbosity")
 	private Integer verbose = 0;
 	
-	@Parameter(names = { "-d", "-depth" }, description = "Depth - search x plies only (default 20)")
+	@Parameter(names = { "-d", "-depth" }, description = "Depth - search x plies only")
 	private Integer depth = 20;
 	
-	@Parameter(names = { "-pv", "-multipv" }, description = "Multipv - search x best moves (default 1)")
+	@Parameter(names = { "-pv", "-multipv" }, description = "Multipv - search x best moves")
 	private String multipv = "1";
 	
 	@Parameter(names = { "-t", "-thread" }, description = "Threads (default 1)")
 	private String threads = "1";
 	
-	@Parameter(names = { "-i", "-input" }, description = "Path to input file*")
+	@Parameter(names = { "-i", "-input" }, description = "Path to input file", required = true)
 	private String input = "";
 	
 	@Parameter(names = { "-o", "-output" }, description = "Path to output file")
 	private String output = "";
 	
-	@Parameter(names = { "-e", "-engine" }, description = "Path to engine*")
+	@Parameter(names = { "-e", "-engine" }, description = "Path to engine")
 	private String pathToEngine = "/Users/fesnault/Documents/uci-engine/stockfish-6-mac/Mac/stockfish-6-64";
+	
+	@Parameter(names = "--help", help = true)
+	private boolean help;
 
 	private BufferedReader br;
 	
