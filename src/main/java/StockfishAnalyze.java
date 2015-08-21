@@ -1,4 +1,4 @@
-package stockfish;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.io.Files;
 
@@ -22,6 +23,19 @@ import engine.EnginePreferences;
 /**
  */
 public class StockfishAnalyze {
+	
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
+		
+		try {
+			StockfishAnalyze proc = new StockfishAnalyze();
+			new JCommander(proc, args);
+			proc.init();
+		} catch (Exception e) {
+			System.out.print(e);
+			System.out.print("USAGE : java -jar {file-name.jar} -p {path} -i {filename} -pv {multipv} -d {depth} -t {threads} -e {path-to-engine}");
+		}
+		
+	}
 
 	private static final String STOCKFISH_IGRIDA = "/uci-engine/stockfish-6-igrida/src/stockfish";
 
@@ -32,20 +46,26 @@ public class StockfishAnalyze {
 	@Parameter
 	private List<String> parameters = new ArrayList<String>();
 	
-	@Parameter(names = "-d", description = "Depth")
+	@Parameter(names = { "-log", "-verbose" }, description = "Level of verbosity (default 0)")
+	private Integer verbose = 0;
+	
+	@Parameter(names = { "-d", "-depth" }, description = "Depth - search x plies only (default 20)")
 	private Integer depth = 20;
 	
-	@Parameter(names = "-pv", description = "Multipv")
+	@Parameter(names = { "-pv", "-multipv" }, description = "Multipv - search x best moves (default 1)")
 	private String multipv = "1";
 	
-	@Parameter(names = "-t", description = "Threads")
+	@Parameter(names = { "-t", "-thread" }, description = "Threads (default 1)")
 	private String threads = "1";
 	
-	@Parameter(names = "-i", description = "File")
-	private String file = "";
+	@Parameter(names = { "-i", "-input" }, description = "Path to input file*")
+	private String input = "";
 	
-	@Parameter(names = "-p", description = "Path")
-	private String path = "";
+	@Parameter(names = { "-o", "-output" }, description = "Path to output file")
+	private String output = "";
+	
+	@Parameter(names = { "-e", "-engine" }, description = "Path to engine*")
+	private String pathToEngine = "/Users/fesnault/Documents/uci-engine/stockfish-6-mac/Mac/stockfish-6-64";
 
 	private BufferedReader br;
 	
@@ -55,8 +75,11 @@ public class StockfishAnalyze {
 		//prefs.setOption("Hash", "1024");
 		prefs.setDepth(depth);
 		
-		engine = EngineFactory.getInstance().createEngine("/temp_dd/igrida-fs1/fesnault/SCRATCH" + STOCKFISH_IGRIDA, prefs);
-
+		if(output.isEmpty()) {
+			output = input + "_output";
+		}
+		
+		engine = EngineFactory.getInstance().createEngine(pathToEngine, prefs);
 		initFile();
 	}
 
@@ -68,29 +91,19 @@ public class StockfishAnalyze {
 	 */
 	private void initFile() throws SQLException, IOException {
 		
-		DecimalFormat nf = new DecimalFormat("0000");
-		file = nf.format(Integer.valueOf(file));
-		
-		
-		String pathI = path + "/input/";
-		String pathO = path + "/output/";
-		
-		InputStream is = new FileInputStream(new File(pathI + file));
-		
-		br = new BufferedReader(new InputStreamReader(is));
+		br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(input))));
 		String currentFEN;
 		StringBuilder sb = new StringBuilder();
 		while ((currentFEN = br.readLine()) != null) {
 			sb.append(currentFEN + "\t");
 			sb.append(engine.computeScore(currentFEN));
 			sb.append("\n");
-			if((++count%50)==0) {
-				Files.append(sb, new File(pathO + file), Charset.defaultCharset());
-				sb.setLength(0);
+			if(verbose==1) {
+				System.out.println(sb.toString());
 			}
+			Files.append(sb, new File(output), Charset.defaultCharset());
+			sb.setLength(0);
 		}
-		Files.append(sb, new File(pathO + file), Charset.defaultCharset());
-		sb.setLength(0);
 	}
 
 	public static EnginePreferences getPrefs() {
@@ -150,11 +163,11 @@ public class StockfishAnalyze {
 	}
 
 	public String getFile() {
-		return file;
+		return input;
 	}
 
 	public void setFile(String file) {
-		this.file = file;
+		this.input = file;
 	}
 
 	public static String getStockfishIgrida() {
