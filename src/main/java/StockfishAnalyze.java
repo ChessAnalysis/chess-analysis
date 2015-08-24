@@ -33,7 +33,7 @@ public class StockfishAnalyze {
 		
 	}
 
-	private static final String STOCKFISH_IGRIDA = "/uci-engine/stockfish-6-igrida/src/stockfish";
+	private static final String STOCKFISH_IGRIDA = "/temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish";
 
 	private static EnginePreferences prefs = new EnginePreferences();
 	private static int count;
