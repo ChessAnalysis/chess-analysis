@@ -1,3 +1,4 @@
+#!/bin/bash
 #OAR -n test_passif
 #OAR -l /core=1,walltime=128:00:00
 #OAR --array-param-file /udd/fesnault/param-file.txt
