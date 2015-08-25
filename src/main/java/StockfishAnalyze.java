@@ -100,6 +100,12 @@ public class StockfishAnalyze {
 			if(verbose==1) {
 				System.out.println(sb.toString());
 			}
+			if(sb.length() < 200) {
+				if(!sb.toString().contains("info depth 0 score mate 0. bestmove (none).")) {
+					sb.setLength(0);
+					engine.debugEngine();
+				}
+			}
 			Files.append(sb, new File(output), Charset.defaultCharset());
 			sb.setLength(0);
 		}

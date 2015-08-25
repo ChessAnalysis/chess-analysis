@@ -26,5 +26,7 @@ public interface Engine {
 	 * @return String
 	 */
 	public String computeScore(String fen);
+
+	public void debugEngine();
 	
 }

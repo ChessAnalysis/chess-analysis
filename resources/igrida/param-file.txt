@@ -1,10 +1,16 @@
--p /temp_dd/igrida-fs1/fesnault/LAST -i 0 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 1 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 2 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 3 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 4 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 5 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 6 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 7 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 8 -t 2
--p /temp_dd/igrida-fs1/fesnault/LAST -i 9 -t 2
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0482
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0481
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0478
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0479
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0483
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0480
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0001
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0002
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0003
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0004
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0005
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0006
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0007
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0008
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0009
+-e /temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish -i /temp_dd/igrida-fs1/fesnault/PASSE5/input/0256

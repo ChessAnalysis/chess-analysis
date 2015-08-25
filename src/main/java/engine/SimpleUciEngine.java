@@ -70,6 +70,11 @@ class SimpleUciEngine implements Engine {
 			write("ucinewgame");
 		}
 	}
+	
+	@Override
+	public void debugEngine() {
+		this.process = null;
+	}
 
 	private synchronized void disconnect() {
 		/*try {
@@ -326,5 +331,7 @@ class SimpleUciEngine implements Engine {
 			disconnect();
 		}
 	}
+
+	
 
 }
