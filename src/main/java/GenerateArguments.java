@@ -9,8 +9,8 @@ public class GenerateArguments {
 
 	public static void main(String[] args) throws IOException {
 		
-		int min = 401;
-		int max = 513;
+		int min = 381;
+		int max = 492;
 		
 		StringBuilder sb = new StringBuilder();
 		

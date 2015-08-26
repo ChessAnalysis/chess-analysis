@@ -1,6 +1,6 @@
 #!/bin/bash
-#OAR -n test_passif
-#OAR -l /core=1,walltime=128:00:00
+#OAR -n chess_analyse
+#OAR -l /core=1,walltime=64:00:00
 #OAR --array-param-file /udd/fesnault/param-file.txt
 #OAR -O /temp_dd/igrida-fs1/fesnault/SCRATCH/igrida.%jobid%.output
 #OAR -E /temp_dd/igrida-fs1/fesnault/SCRATCH/igrida.%jobid%.output

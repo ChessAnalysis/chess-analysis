@@ -57,9 +57,6 @@ public class StockfishAnalyze {
 	@Parameter(names = { "-i", "-input" }, description = "Path to input file", required = true)
 	private String input = "";
 	
-	@Parameter(names = { "-o", "-output" }, description = "Path to output file")
-	private String output = "";
-	
 	@Parameter(names = { "-e", "-engine" }, description = "Path to engine")
 	private String pathToEngine = "/Users/fesnault/Documents/uci-engine/stockfish-6-mac/Mac/stockfish-6-64";
 	
@@ -73,10 +70,6 @@ public class StockfishAnalyze {
 		prefs.setOption("Threads", threads);
 		//prefs.setOption("Hash", "1024");
 		prefs.setDepth(depth);
-		
-		if(output.isEmpty()) {
-			output = input + "_output";
-		}
 		
 		engine = EngineFactory.getInstance().createEngine(pathToEngine, prefs);
 		initFile();
@@ -104,9 +97,12 @@ public class StockfishAnalyze {
 				if(!sb.toString().contains("info depth 0 score mate 0. bestmove (none).")) {
 					sb.setLength(0);
 					engine.debugEngine();
+					sb.append(currentFEN + "\t");
+					sb.append(engine.computeScore(currentFEN));
+					sb.append("\n");
 				}
 			}
-			Files.append(sb, new File(output), Charset.defaultCharset());
+			Files.append(sb, new File(input + "_output"), Charset.defaultCharset());
 			sb.setLength(0);
 		}
 	}
