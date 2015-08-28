@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * @author Nicola Ferraro, François Esnault
+ * @date 28 août 2015
  */
 public class EnginePreferences {
 
@@ -13,8 +15,8 @@ public class EnginePreferences {
 	
 	/**
 	 * Method getDepth.
-	 * @return int
-	 */
+	
+	 * @return int */
 	public int getDepth() {
 		return depth;
 	}
@@ -35,8 +37,8 @@ public class EnginePreferences {
 	
 	/**
 	 * Method getMaxComputationTimeMillis.
-	 * @return long
-	 */
+	
+	 * @return long */
 	public long getMaxComputationTimeMillis() {
 		return maxComputationTimeMillis;
 	}
@@ -68,8 +70,8 @@ public class EnginePreferences {
 	
 	/**
 	 * Method getOptions.
-	 * @return Map<String,String>
-	 */
+	
+	 * @return Map<String,String> */
 	public Map<String, String> getOptions() {
 		return options;
 	}

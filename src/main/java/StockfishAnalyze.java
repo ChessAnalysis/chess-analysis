@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,18 +17,29 @@ import engine.EngineFactory;
 import engine.EnginePreferences;
 
 /**
+ * @author François Esnault
+ * @date 28 août 2015
  */
 public class StockfishAnalyze {
 	
+	/**
+	 * Method main.
+	 * @param args String[]
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ClassNotFoundException * @throws SQLException * @throws IOException * @throws InterruptedException * @throws SQLException * @throws SQLException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, IOException, InterruptedException {
 		StockfishAnalyze proc = new StockfishAnalyze();
 		JCommander commands = new JCommander(proc, args);
 		try {
 			proc.init();
 		} catch (Exception e) {
+			e.printStackTrace();
 			commands.usage();
 		}
-		
 	}
 
 	private static final String STOCKFISH_IGRIDA = "/temp_dd/igrida-fs1/fesnault/SCRATCH/uci-engine/stockfish-6-igrida/src/stockfish";
@@ -65,6 +74,10 @@ public class StockfishAnalyze {
 
 	private BufferedReader br;
 	
+	/**
+	 * Method init.
+	 * @throws SQLException * @throws IOException * @throws IOException * @throws IOException
+	 */
 	public void init() throws SQLException, IOException {
 		prefs.setOption("multipv", multipv);
 		prefs.setOption("Threads", threads);
@@ -77,9 +90,7 @@ public class StockfishAnalyze {
 
 	/**
 	 * Method initFile.
-	 * @param i Integer
-	 * @throws SQLException
-	 * @throws IOException
+	 * @throws SQLException * @throws IOException * @throws IOException * @throws IOException * @throws IOException
 	 */
 	private void initFile() throws SQLException, IOException {
 		
@@ -87,9 +98,7 @@ public class StockfishAnalyze {
 		String currentFEN;
 		StringBuilder sb = new StringBuilder();
 		while ((currentFEN = br.readLine()) != null) {
-			sb.append(currentFEN + "\t");
-			sb.append(engine.computeScore(currentFEN));
-			sb.append("\n");
+			sb.append(currentFEN + "\t" + engine.computeScore(currentFEN) + '\n');
 			if(verbose==1) {
 				System.out.println(sb.toString());
 			}
@@ -97,9 +106,7 @@ public class StockfishAnalyze {
 				if(!sb.toString().contains("info depth 0 score mate 0. bestmove (none).")) {
 					sb.setLength(0);
 					engine.debugEngine();
-					sb.append(currentFEN + "\t");
-					sb.append(engine.computeScore(currentFEN));
-					sb.append("\n");
+					sb.append(currentFEN + "\t" + engine.computeScore(currentFEN) + '\n');
 				}
 			}
 			Files.append(sb, new File(input + "_output"), Charset.defaultCharset());
@@ -107,70 +114,138 @@ public class StockfishAnalyze {
 		}
 	}
 
+	/**
+	 * Method getPrefs.
+	
+	 * @return EnginePreferences */
 	public static EnginePreferences getPrefs() {
 		return prefs;
 	}
 
+	/**
+	 * Method setPrefs.
+	 * @param prefs EnginePreferences
+	 */
 	public static void setPrefs(EnginePreferences prefs) {
 		StockfishAnalyze.prefs = prefs;
 	}
 
+	/**
+	 * Method getCount.
+	
+	 * @return int */
 	public static int getCount() {
 		return count;
 	}
 
+	/**
+	 * Method setCount.
+	 * @param count int
+	 */
 	public static void setCount(int count) {
 		StockfishAnalyze.count = count;
 	}
 
+	/**
+	 * Method getEngine.
+	
+	 * @return Engine */
 	public static Engine getEngine() {
 		return engine;
 	}
 
+	/**
+	 * Method setEngine.
+	 * @param engine Engine
+	 */
 	public static void setEngine(Engine engine) {
 		StockfishAnalyze.engine = engine;
 	}
 
+	/**
+	 * Method getParameters.
+	
+	 * @return List<String> */
 	public List<String> getParameters() {
 		return parameters;
 	}
 
+	/**
+	 * Method setParameters.
+	 * @param parameters List<String>
+	 */
 	public void setParameters(List<String> parameters) {
 		this.parameters = parameters;
 	}
 
+	/**
+	 * Method getDepth.
+	
+	 * @return Integer */
 	public Integer getDepth() {
 		return depth;
 	}
 
+	/**
+	 * Method setDepth.
+	 * @param depth Integer
+	 */
 	public void setDepth(Integer depth) {
 		this.depth = depth;
 	}
 
+	/**
+	 * Method getMultipv.
+	
+	 * @return String */
 	public String getMultipv() {
 		return multipv;
 	}
 
+	/**
+	 * Method setMultipv.
+	 * @param multipv String
+	 */
 	public void setMultipv(String multipv) {
 		this.multipv = multipv;
 	}
 
+	/**
+	 * Method getThreads.
+	
+	 * @return String */
 	public String getThreads() {
 		return threads;
 	}
 
+	/**
+	 * Method setThreads.
+	 * @param threads String
+	 */
 	public void setThreads(String threads) {
 		this.threads = threads;
 	}
 
+	/**
+	 * Method getFile.
+	
+	 * @return String */
 	public String getFile() {
 		return input;
 	}
 
+	/**
+	 * Method setFile.
+	 * @param file String
+	 */
 	public void setFile(String file) {
 		this.input = file;
 	}
 
+	/**
+	 * Method getStockfishIgrida.
+	
+	 * @return String */
 	public static String getStockfishIgrida() {
 		return STOCKFISH_IGRIDA;
 	}

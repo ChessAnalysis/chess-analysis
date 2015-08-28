@@ -1,30 +1,16 @@
 package engine;
 
-import java.util.List;
-
 /**
+ * @author Nicola Ferraro, François Esnault
+ * @date 28 août 2015
  */
 public interface Engine {
 	
 	/**
-	 * Method computeBestMove.
-	 * @param moves List<String>
-	 * @return String
-	 */
-	public String computeBestMove(List<String> moves);
-	
-	/**
-	 * Method computeScoreFast.
-	 * @param fen String
-	 * @return String
-	 */
-	public String computeScoreFast(String fen);
-	
-	/**
 	 * Method computeScore.
 	 * @param fen String
-	 * @return String
-	 */
+	
+	 * @return String */
 	public String computeScore(String fen);
 
 	public void debugEngine();
