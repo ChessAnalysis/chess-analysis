@@ -25,6 +25,13 @@ public class StockfishAnalyze {
 	/**
 	 * Method main.
 	 * @param args String[]
+	 * @param -d, -depth	Depth - search x plies only (Default: 20)
+	 * @param -e, -engine	Path to engine (Default: /Users/fesnault/Documents/uci-engine/stockfish-6-mac/Mac/stockfish-6-64)
+	 * @param -i, -input	Path to input file (Default: <empty string>)
+	 * @param -pv, -multipv	Multipv - search x best moves (Default: 1)
+	 * @param -o, -output	Path to output file (Default: <empty string>)
+	 * @param -t, -thread	Threads (Default: 1)
+	 * @param -log, -verbose	Level of verbosity (Default: 0)
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws ClassNotFoundException * @throws SQLException * @throws IOException * @throws InterruptedException * @throws SQLException * @throws SQLException
@@ -79,29 +86,32 @@ public class StockfishAnalyze {
 	 * @throws SQLException * @throws IOException * @throws IOException * @throws IOException
 	 */
 	public void init() throws SQLException, IOException {
+		// Set chess engine options
 		prefs.setOption("multipv", multipv);
 		prefs.setOption("Threads", threads);
-		//prefs.setOption("Hash", "1024");
 		prefs.setDepth(depth);
 		
+		// Create the chess engine process
 		engine = EngineFactory.getInstance().createEngine(pathToEngine, prefs);
-		initFile();
+		analyse();
 	}
 
 	/**
 	 * Method initFile.
 	 * @throws SQLException * @throws IOException * @throws IOException * @throws IOException * @throws IOException
 	 */
-	private void initFile() throws SQLException, IOException {
+	private void analyse() throws SQLException, IOException {
 		
 		br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(input))));
 		String currentFEN;
 		StringBuilder sb = new StringBuilder();
 		while ((currentFEN = br.readLine()) != null) {
+			// Analyse FEN to get log
 			sb.append(currentFEN + "\t" + engine.computeScore(currentFEN) + '\n');
 			if(verbose==1) {
 				System.out.println(sb.toString());
 			}
+			// Catch exception when the chess engine is off
 			if(sb.length() < 200) {
 				if(!sb.toString().contains("info depth 0 score mate 0. bestmove (none).")) {
 					sb.setLength(0);
@@ -109,6 +119,7 @@ public class StockfishAnalyze {
 					sb.append(currentFEN + "\t" + engine.computeScore(currentFEN) + '\n');
 				}
 			}
+			// Write log
 			Files.append(sb, new File(input + "_output"), Charset.defaultCharset());
 			sb.setLength(0);
 		}
